@@ -10,7 +10,7 @@ export default function Header() {
         <span className='flex space-x-2'>
           <Link
             to='/sign-in'
-            className='flex items-center text-blue-600 font-bold hover:bg-gray-100'
+            className='flex items-center text-blue-600 font-bold px-3 transition duration-300 hover:bg-gray-300 hover:text-blue-700 bg-gray-100'
           >
             Sign In
           </Link>
