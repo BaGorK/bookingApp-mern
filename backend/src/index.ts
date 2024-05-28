@@ -3,6 +3,7 @@ dotenv.config();
 
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import mongoose from 'mongoose';
 
 const app = express();
 app.use(express.json());
@@ -15,4 +16,15 @@ app.get('/', (req: Request, res: Response) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => console.log(`Server listening on port : ${PORT}`));
+async function connectDb() {
+  try {
+    await mongoose.connect(process.env.DB_LOCAL!);
+    app.listen(PORT, () =>
+      console.log(`DB connected and Server listening on port : ${PORT}...`)
+    );
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
+connectDb();
