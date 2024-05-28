@@ -5,15 +5,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Layout></Layout>}>
-          Home page
-        </Route>
-        <Route path='/search' element={<span>search page</span>}>
-          Home page
-        </Route>
-        <Route path='/*' element={<Navigate to='/' />}>
-          Home page
-        </Route>
+        <Route path='/' element={<Layout>Home page</Layout>} />
+        <Route path='/search' element={<Layout>search page</Layout>} />
+        <Route path='/*' element={<Navigate to='/' />} />
       </Routes>
     </BrowserRouter>
   );
