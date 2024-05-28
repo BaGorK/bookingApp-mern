@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import { StringExpressionOperatorReturningBoolean } from 'mongoose';
 
 export const createJWT = (payload: { userId: string }) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
