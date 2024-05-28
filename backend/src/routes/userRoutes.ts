@@ -4,6 +4,7 @@ import { createJWT } from '../utils/tokenUtils';
 
 const Router = express.Router();
 
+// /api/users/register
 Router.post('/register', async (req: Request, res: Response) => {
   try {
     let user = await User.findOne({

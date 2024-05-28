@@ -5,6 +5,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import userRouter from './routes/userRoutes';
 
 const app = express();
 
@@ -16,9 +17,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/test', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
+
+app.use('/api/v1/users', userRouter);
 
 const PORT = process.env.PORT || 3000;
 
