@@ -1,6 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
+import { useQuery } from '@tanstack/react-query';
 import { ReactNode, createContext, useContext } from 'react';
 import toast from 'react-hot-toast';
+import * as apiClient from '../services/api-client';
 
 type ToastMessage = {
   message: string;
@@ -9,6 +11,7 @@ type ToastMessage = {
 
 type AppContextType = {
   showToast: (toastMessage: ToastMessage) => void;
+  isLoggedIn: boolean;
 };
 
 const showToast = (toastMessage: ToastMessage) => {
@@ -26,8 +29,14 @@ const showToast = (toastMessage: ToastMessage) => {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 function AppContextProvider(props: { children: ReactNode }) {
+  const { isError } = useQuery({
+    queryKey: ['validateToken'],
+    queryFn: apiClient.validateToken,
+    retry: false,
+  });
+
   return (
-    <AppContext.Provider value={{ showToast }}>
+    <AppContext.Provider value={{ showToast, isLoggedIn: !isError }}>
       {props.children}
     </AppContext.Provider>
   );
