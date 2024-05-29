@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { check, validationResult } from 'express-validator';
 import User from '../models/userModel';
 import { comparePassword } from '../utils/passwordUtils';
+import { createJWT } from '../utils/tokenUtils';
 
 const Router = express.Router();
 
@@ -33,9 +34,21 @@ Router.post(
       if (!isMatch) {
         return res.status(400).json({ message: 'Invalid Credentials' });
       }
+
+      const token = createJWT({ userId: user._id });
+
+      res.cookie('auth_token', token, {
+        maxAge: 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+      });
+
+      return res.status(200).json({ userId: user._id });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: 'Something went wrong' });
     }
   }
 );
+
+export default Router;

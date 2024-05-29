@@ -6,6 +6,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import userRouter from './routes/userRoutes';
+import authRouter from './routes/authRoutes';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get('/test', (req: Request, res: Response) => {
 });
 
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/auth', authRouter);
 
 const PORT = process.env.PORT || 3000;
 
