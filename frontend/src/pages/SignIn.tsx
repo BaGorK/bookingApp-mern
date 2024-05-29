@@ -24,8 +24,8 @@ export default function SignIn() {
       toast.success('Login successful');
       navigate('/');
     },
-    onError: () => {
-      toast.error('Login failed, please try again');
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
