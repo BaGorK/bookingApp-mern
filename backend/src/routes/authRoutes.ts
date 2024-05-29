@@ -14,6 +14,28 @@ Router.post(
     }),
   ],
   async (req: Request, res: Response) => {
-    res.status(200).json({ message: 'user login succuss' });
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty())
+      return res.status(400).json({ message: errors.array() });
+
+    const { email, password } = req.body;
+
+    try {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res.status(400).json({ message: 'Invalid Credentials' });
+      }
+
+      const isMatch = await comparePassword(password, user.password);
+
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Invalid Credentials' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Something went wrong' });
+    }
   }
 );
