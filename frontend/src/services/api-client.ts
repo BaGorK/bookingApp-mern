@@ -17,6 +17,17 @@ export const register = async (formData: RegisterFormDataType) => {
   if (!res.ok) {
     throw new Error(data.message);
   }
+};
 
-  console.log(data);
+export const validateToken = async () => {
+  const res = await fetch(`${API_BASE_URL}/api/v1/auth/validate-token`, {
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error('Token invalid');
+  }
+  const data = await res.json();
+
+  return data;
 };

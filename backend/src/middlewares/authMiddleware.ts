@@ -15,7 +15,7 @@ export const verifyToken = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies['auth_token'];
+  const { auth_token: token } = req.cookies;
 
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized' });
