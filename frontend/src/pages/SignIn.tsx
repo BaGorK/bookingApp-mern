@@ -1,4 +1,8 @@
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import * as apiClient from '../services/api-client';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export type SignInFormDataType = {
   email: string;
@@ -6,13 +10,31 @@ export type SignInFormDataType = {
 };
 
 export default function SignIn() {
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
+    handleSubmit,
   } = useForm<SignInFormDataType>();
 
+  const { mutate } = useMutation({
+    mutationFn: apiClient.signIn,
+    onSuccess: () => {
+      toast.success('Login successful');
+      navigate('/');
+    },
+    onError: () => {
+      toast.error('Login failed, please try again');
+    },
+  });
+
+  const handleOnSubmit = handleSubmit((data) => {
+    mutate(data);
+  });
+
   return (
-    <div className='flex flex-col gap-5'>
+    <form onSubmit={handleOnSubmit} className='flex flex-col gap-5'>
       <h2 className='text-3xl font-bold'>Sign In</h2>
 
       <label
@@ -66,6 +88,6 @@ export default function SignIn() {
           Sign In
         </button>
       </span>
-    </div>
+    </form>
   );
 }
