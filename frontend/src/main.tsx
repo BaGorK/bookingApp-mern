@@ -17,8 +17,8 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AppContextProvider>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AppContextProvider>
         <ReactQueryDevtools initialIsOpen={true} />
         <App />
 
@@ -42,7 +42,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             },
           }}
         />
-      </QueryClientProvider>{' '}
-    </AppContextProvider>
+      </AppContextProvider>
+    </QueryClientProvider>{' '}
   </React.StrictMode>
 );
