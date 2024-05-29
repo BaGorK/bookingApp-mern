@@ -3,6 +3,7 @@ import { check, validationResult } from 'express-validator';
 import User from '../models/userModel';
 import { comparePassword } from '../utils/passwordUtils';
 import { createJWT } from '../utils/tokenUtils';
+import { verifyToken } from '../middlewares/authMiddleware';
 
 const Router = express.Router();
 
@@ -50,5 +51,9 @@ Router.post(
     }
   }
 );
+
+Router.get('/validate-token', verifyToken, (req: Request, res: Response) => {
+  return res.status(200).json({ userId: req.userId });
+});
 
 export default Router;
