@@ -57,6 +57,15 @@ export default function SignIn() {
           </p>
         )}
       </label>
+      <span>
+        <button
+          type='submit'
+          //   disabled={status === 'pending'}
+          className='bg-blue-600 text-white  px-3 py-2 rounded font-bold hover:bg-blue-500 text-xl'
+        >
+          Sign In
+        </button>
+      </span>
     </div>
   );
 }
