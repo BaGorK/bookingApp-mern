@@ -8,7 +8,14 @@ export default function App() {
       <Routes>
         <Route path='/' element={<Layout>Home page</Layout>} />
         <Route path='/search' element={<Layout>search page</Layout>} />
-        <Route path='/register' element={<Register />} />
+        <Route
+          path='/register'
+          element={
+            <Layout>
+              <Register />
+            </Layout>
+          }
+        />
         <Route path='/*' element={<Navigate to='/' />} />
       </Routes>
     </BrowserRouter>
