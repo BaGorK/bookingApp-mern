@@ -1,4 +1,6 @@
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import * as apiClient from '../services/api-client';
 
 export type RegisterFormDataType = {
   firstName: string;
@@ -16,8 +18,18 @@ export default function Register() {
     watch,
   } = useForm<RegisterFormDataType>();
 
+  const { mutate: registerUser, status } = useMutation({
+    mutationFn: apiClient.register,
+    onSuccess: () => {
+      console.log('registration successful!');
+    },
+    onError: (error: Error) => {
+      console.log(error.message);
+    },
+  });
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    registerUser(data);
   });
 
   return (
@@ -132,6 +144,7 @@ export default function Register() {
       <span>
         <button
           type='submit'
+          disabled={status === 'pending'}
           className='bg-blue-600 text-white  px-3 py-2 rounded font-bold hover:bg-blue-500 text-xl'
         >
           Create Account
