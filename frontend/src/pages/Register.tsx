@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 
-type RegisterFormDataType = {
+export type RegisterFormDataType = {
   firstName: string;
   lastName: string;
   email: string;
@@ -15,7 +15,7 @@ export default function Register() {
     formState: { errors },
     watch,
   } = useForm<RegisterFormDataType>();
-  console.log(errors);
+
   const onSubmit = handleSubmit((data) => {
     console.log(data);
   });
