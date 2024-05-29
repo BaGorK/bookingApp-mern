@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import * as apiClient from '../services/api-client';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export type RegisterFormDataType = {
   firstName: string;
@@ -12,6 +13,8 @@ export type RegisterFormDataType = {
 };
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -23,6 +26,7 @@ export default function Register() {
     mutationFn: apiClient.register,
     onSuccess: () => {
       toast.success('registration successful!');
+      navigate('login');
     },
     onError: (error: Error) => {
       toast.error(error.message);
