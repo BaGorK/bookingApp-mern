@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import * as apiClient from '../services/api-client';
+import toast from 'react-hot-toast';
 
 export type RegisterFormDataType = {
   firstName: string;
@@ -21,10 +22,10 @@ export default function Register() {
   const { mutate: registerUser, status } = useMutation({
     mutationFn: apiClient.register,
     onSuccess: () => {
-      console.log('registration successful!');
+      toast.success('registration successful!');
     },
     onError: (error: Error) => {
-      console.log(error.message);
+      toast.error(error.message);
     },
   });
 

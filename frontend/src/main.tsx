@@ -26,17 +26,17 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         containerStyle={{ margin: '8px' }}
         toastOptions={{
           success: {
-            duration: 3000,
+            duration: 2000,
           },
           error: {
-            duration: 5000,
+            duration: 3000,
           },
           style: {
             fontSize: '16px',
             maxWidth: '500px',
             padding: '16px 24px',
-            backgroundColor: 'var(--color-grey-50)',
-            color: 'var(--color-grey-700)',
+            backgroundColor: '#f8fafc',
+            color: '#0f172a',
           },
         }}
       />
