@@ -5,6 +5,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import userRouter from './routes/userRoutes';
 import authRouter from './routes/authRoutes';
 
@@ -22,6 +23,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(cookieParser());
 
 app.get('/test', (req: Request, res: Response) => {
   res.send('Hello World!');
