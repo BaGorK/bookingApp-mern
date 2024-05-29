@@ -1,33 +1,50 @@
 import express, { Request, Response } from 'express';
 import User from '../models/userModel';
 import { createJWT } from '../utils/tokenUtils';
+import { check, validationResult } from 'express-validator';
 
 const Router = express.Router();
 
 // /api/users/register
-Router.post('/register', async (req: Request, res: Response) => {
-  try {
-    let user = await User.findOne({
-      email: req.body.email,
-    });
+Router.post(
+  '/register',
+  [
+    check('firstName', 'First Name is required').isString(),
+    check('lastName', 'last name is required').isString(),
+    check('email', 'email is required').isEmail(),
+    check('password', 'password with 6 or more characters required').isLength({
+      min: 6,
+    }),
+  ],
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() });
+    }
 
-    if (user) return res.status(400).json({ message: 'User already exists' });
+    try {
+      let user = await User.findOne({
+        email: req.body.email,
+      });
 
-    user = await User.create(req.body);
+      if (user) return res.status(400).json({ message: 'User already exists' });
 
-    const token = createJWT({ userId: user._id });
+      user = await User.create(req.body);
 
-    res.cookie('auth_token', token, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-      secure: process.env.NODE_ENV === 'production',
-    });
+      const token = createJWT({ userId: user._id });
 
-    return res.status(201).json({ user });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: 'Something went wrong' });
+      res.cookie('auth_token', token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: process.env.NODE_ENV === 'production',
+      });
+
+      return res.status(201).json({ user });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: 'Something went wrong' });
+    }
   }
-});
+);
 
 export default Router;
