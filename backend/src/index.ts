@@ -1,18 +1,18 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 dotenv.config();
 
-import express, { Request, Response } from 'express';
-import cors from 'cors';
-import mongoose from 'mongoose';
-import morgan from 'morgan';
-import cookieParser from 'cookie-parser';
-import userRouter from './routes/userRoutes';
-import authRouter from './routes/authRoutes';
+import express, { Request, Response } from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import userRouter from "./routes/userRoutes";
+import authRouter from "./routes/authRoutes";
 
 const app = express();
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
 app.use(express.json());
@@ -23,14 +23,15 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(cookieParser());
 
-app.get('/test', (req: Request, res: Response) => {
-  res.send('Hello World!');
+app.get("/test", (req: Request, res: Response) => {
+  res.send("Hello World!");
 });
 
-app.use('/api/v1/users', userRouter);
-app.use('/api/v1/auth', authRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/auth", authRouter);
 
 const PORT = process.env.PORT || 3000;
 
