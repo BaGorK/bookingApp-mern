@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
-import * as apiClient from '../services/api-client';
-import { useNavigate } from 'react-router-dom';
-import { useAppContext } from '../contexts/AppContext';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import * as apiClient from "../services/api-client";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 
 export type RegisterFormDataType = {
   firstName: string;
@@ -14,6 +14,8 @@ export type RegisterFormDataType = {
 
 export default function Register() {
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
 
   const { showToast } = useAppContext();
 
@@ -27,11 +29,14 @@ export default function Register() {
   const { mutate: registerUser, status } = useMutation({
     mutationFn: apiClient.register,
     onSuccess: () => {
-      showToast({ type: 'SUCCESS', message: 'registration successful!' });
-      navigate('login');
+      showToast({ type: "SUCCESS", message: "registration successful!" });
+      queryClient.invalidateQueries({
+        queryKey: ["validateToken"],
+      });
+      navigate("login");
     },
     onError: (error: Error) => {
-      showToast({ type: 'ERROR', message: error.message });
+      showToast({ type: "ERROR", message: error.message });
     },
   });
 
@@ -40,119 +45,119 @@ export default function Register() {
   });
 
   return (
-    <form className='flex flex-col gap-5' onSubmit={onSubmit}>
-      <h2 className='text-3xl font-bold'>Create an Account</h2>
-      <div className='flex flex-col md:flex-row gap-5'>
+    <form className="flex flex-col gap-5" onSubmit={onSubmit}>
+      <h2 className="text-3xl font-bold">Create an Account</h2>
+      <div className="flex flex-col md:flex-row gap-5">
         <label
-          htmlFor='firstName'
-          className='text-gray-700 text-sm font-bold flex-1'
+          htmlFor="firstName"
+          className="text-gray-700 text-sm font-bold flex-1"
         >
           First Name
           <input
-            type='text'
-            id='firstName'
-            defaultValue='edmealem'
-            className='border rounded w-full py-1 px-2 font-normal'
-            {...register('firstName', { required: 'this field is required' })}
+            type="text"
+            id="firstName"
+            defaultValue="edmealem"
+            className="border rounded w-full py-1 px-2 font-normal"
+            {...register("firstName", { required: "this field is required" })}
           />
           {errors.firstName && (
-            <p className='text-red-700 text-sm font-normal '>
+            <p className="text-red-700 text-sm font-normal ">
               {errors.firstName.message}
             </p>
           )}
         </label>
         <label
-          htmlFor='lastName'
-          className='text-gray-700 flex-1 text-sm font-bold '
+          htmlFor="lastName"
+          className="text-gray-700 flex-1 text-sm font-bold "
         >
           last Name
           <input
-            type='text'
-            id='lastName'
-            defaultValue='kassahun'
-            {...register('lastName', { required: 'this field is required' })}
-            className='border rounded w-full py-1 px-2 font-normal'
+            type="text"
+            id="lastName"
+            defaultValue="kassahun"
+            {...register("lastName", { required: "this field is required" })}
+            className="border rounded w-full py-1 px-2 font-normal"
           />
           {errors.lastName && (
-            <p className='text-red-700 text-sm font-normal'>
+            <p className="text-red-700 text-sm font-normal">
               {errors.lastName.message}
             </p>
           )}
         </label>
       </div>
       <label
-        htmlFor='email'
-        className='text-gray-700 flex-1 text-sm font-bold '
+        htmlFor="email"
+        className="text-gray-700 flex-1 text-sm font-bold "
       >
         email
         <input
-          type='email'
-          id='email'
-          defaultValue='test@test.com'
-          {...register('email', { required: 'this field is required' })}
-          className='border rounded w-full py-1 px-2 font-normal'
+          type="email"
+          id="email"
+          defaultValue="test@test.com"
+          {...register("email", { required: "this field is required" })}
+          className="border rounded w-full py-1 px-2 font-normal"
         />
         {errors.email && (
-          <p className='text-red-700 text-sm font-normal'>
+          <p className="text-red-700 text-sm font-normal">
             {errors.email.message}
           </p>
         )}
       </label>
       <label
-        htmlFor='password'
-        className='text-gray-700 flex-1 text-sm font-bold '
+        htmlFor="password"
+        className="text-gray-700 flex-1 text-sm font-bold "
       >
         password
         <input
-          type='password'
-          id='password'
-          defaultValue='test1234'
-          {...register('password', {
-            required: 'this field is required',
+          type="password"
+          id="password"
+          defaultValue="test1234"
+          {...register("password", {
+            required: "this field is required",
             minLength: {
               value: 6,
-              message: 'password must be at least 6 characters',
+              message: "password must be at least 6 characters",
             },
           })}
-          className='border rounded w-full py-1 px-2 font-normal'
-        />{' '}
+          className="border rounded w-full py-1 px-2 font-normal"
+        />{" "}
         {errors.password && (
-          <p className='text-red-700 text-sm font-normal'>
+          <p className="text-red-700 text-sm font-normal">
             {errors.password.message}
           </p>
         )}
       </label>
       <label
-        htmlFor='confirmPassword'
-        className='text-gray-700 flex-1 text-sm font-bold '
+        htmlFor="confirmPassword"
+        className="text-gray-700 flex-1 text-sm font-bold "
       >
         confirm password
         <input
-          type='password'
-          id='confirmPassword'
-          defaultValue='test1234'
-          {...register('confirmPassword', {
+          type="password"
+          id="confirmPassword"
+          defaultValue="test1234"
+          {...register("confirmPassword", {
             validate: (val) => {
               if (!val) {
-                return 'This field is required';
-              } else if (watch('password') !== val) {
-                return 'Your passwords do not match';
+                return "This field is required";
+              } else if (watch("password") !== val) {
+                return "Your passwords do not match";
               }
             },
           })}
-          className='border rounded w-full py-1 px-2 font-normal'
+          className="border rounded w-full py-1 px-2 font-normal"
         />
         {errors.confirmPassword && (
-          <p className='text-red-700 text-sm font-normal'>
+          <p className="text-red-700 text-sm font-normal">
             {errors.confirmPassword.message}
           </p>
         )}
       </label>
       <span>
         <button
-          type='submit'
-          disabled={status === 'pending'}
-          className='bg-blue-600 text-white  px-3 py-2 rounded font-bold hover:bg-blue-500 text-xl'
+          type="submit"
+          disabled={status === "pending"}
+          className="bg-blue-600 text-white  px-3 py-2 rounded font-bold hover:bg-blue-500 text-xl"
         >
           Create Account
         </button>
