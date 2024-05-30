@@ -153,7 +153,7 @@ export default function Register() {
           </p>
         )}
       </label>
-      <span>
+      <span className="flex flex-col">
         <button
           type="submit"
           disabled={status === "pending"}

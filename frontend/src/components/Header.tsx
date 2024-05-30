@@ -13,12 +13,20 @@ export default function Header() {
         </span>
         <span className="flex space-x-2">
           {!isLoggedIn ? (
-            <Link
-              to="/sign-in"
-              className="flex rounded items-center text-blue-600 font-bold px-3 transition duration-300 hover:bg-gray-300 hover:text-blue-700 bg-gray-100"
-            >
-              Sign In
-            </Link>
+            <>
+              <Link
+                to="/sign-in"
+                className="flex rounded items-center text-blue-600 font-bold px-3 transition duration-300 hover:bg-gray-300 hover:text-blue-700 bg-gray-100"
+              >
+                Sign In
+              </Link>{" "}
+              <Link
+                to="/register"
+                className="flex rounded items-center text-blue-600 font-bold px-3 transition duration-300 hover:bg-gray-300 hover:text-blue-700 bg-gray-100"
+              >
+                Sign Up
+              </Link>
+            </>
           ) : (
             <>
               <Link
