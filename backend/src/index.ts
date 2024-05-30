@@ -10,6 +10,7 @@ import userRouter from "./routes/userRoutes";
 import authRouter from "./routes/authRoutes";
 import path from "path";
 import { v2 as cloudinary } from "cloudinary";
+import myHotelRouter from "./routes/myHotelRoutes";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -42,6 +43,7 @@ app.get("/test", (req: Request, res: Response) => {
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/myHotels", myHotelRouter);
 
 const PORT = process.env.PORT || 3000;
 
