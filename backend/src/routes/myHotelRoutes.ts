@@ -30,7 +30,7 @@ Router.post(
         return res.url;
       });
 
-      const imageUrls = await Promise.all(uploadPromises)
+      const imageUrls = await Promise.all(uploadPromises);
       // 2. if (upload) add the urls to the new hotel
       // 3. save the new hotel in our database
 
@@ -38,7 +38,10 @@ Router.post(
       return res
         .status(201)
         .json({ message: "hotel created success", data: newHotel });
-    } catch (error) {}
+    } catch (error) {
+      console.log("Error creating hotels: ", error);
+      res.status(500).json({ message: "Something went wrong" });
+    }
   }
 );
 
