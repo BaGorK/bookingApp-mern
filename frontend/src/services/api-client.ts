@@ -55,6 +55,7 @@ export const signIn = async (formData: SignInFormDataType) => {
 export const signOut = async () => {
   const res = await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
     credentials: "include",
+    method: "post",
   });
 
   const data = await res.json();
