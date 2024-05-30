@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import * as apiClient from "../services/api-client";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export type SignInFormDataType = {
   email: string;
@@ -84,7 +84,7 @@ export default function SignIn() {
           </p>
         )}
       </label>
-      <span>
+      <span className="flex  flex-col justify-start gap-3">
         <button
           type="submit"
           disabled={isPending}
@@ -92,6 +92,12 @@ export default function SignIn() {
         >
           {isPending ? "Signing In ..." : "Sign In"}
         </button>
+        <span className="text-sm">
+          Not Registered?{" "}
+          <Link to="/register" className="text-blue-600 underline">
+            Create an account here
+          </Link>
+        </span>
       </span>
     </form>
   );
