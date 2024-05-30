@@ -8,12 +8,15 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoutes";
 import authRouter from "./routes/authRoutes";
+import path from "path";
 
 const app = express();
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
