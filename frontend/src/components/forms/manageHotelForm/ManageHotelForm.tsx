@@ -24,9 +24,25 @@ function ManageHotelForm() {
   const formMethods = useForm<HotelFormDataType>();
   const { handleSubmit } = formMethods;
 
-  const onSubmit = handleSubmit((formData: HotelFormDataType) => {
-    // create new form data object and call our api
-    console.log(formData);
+  const onSubmit = handleSubmit((formDataJson: HotelFormDataType) => {
+    const formData = new FormData();
+    formData.append("name", formDataJson.name);
+    formData.append("city", formDataJson.city);
+    formData.append("country", formDataJson.country);
+    formData.append("description", formDataJson.description);
+    formData.append("type", formDataJson.type);
+    formData.append("pricePerNight", formDataJson.pricePerNight.toString());
+    formData.append("starRating", formDataJson.starRating.toString());
+    formData.append("adultCount", formDataJson.adultCount.toString());
+    formData.append("childCount", formDataJson.childCount.toString());
+
+    formDataJson.facilities.forEach((facility, index) => {
+      formData.append(`facilities[${index}]`, facility);
+    });
+
+    Array.from(formDataJson.imageFiles).forEach((imageFile) => {
+      formData.append(`imageFiles`, imageFile);
+    });
   });
 
   return (
