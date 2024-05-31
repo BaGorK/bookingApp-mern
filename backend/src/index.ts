@@ -45,6 +45,10 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/myHotels", myHotelRouter);
 
+app.get("*", (req: Request, res: Response) => {
+  return res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+});
+
 const PORT = process.env.PORT || 3000;
 
 async function connectDb() {
