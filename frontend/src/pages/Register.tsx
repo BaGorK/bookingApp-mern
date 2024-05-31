@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import * as apiClient from "../services/api-client";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 
 export type RegisterFormDataType = {
@@ -161,6 +161,12 @@ export default function Register() {
         >
           Create Account
         </button>
+        <span className="text-sm">
+          Already have an account?{" "}
+          <Link to="/sign-in" className="text-blue-600 underline">
+            login here
+          </Link>
+        </span>{" "}
       </span>
     </form>
   );
