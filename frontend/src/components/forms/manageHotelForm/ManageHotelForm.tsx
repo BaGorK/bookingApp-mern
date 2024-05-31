@@ -22,7 +22,7 @@ function ManageHotelForm() {
 
   return (
     <FormProvider {...formMethods}>
-      <form>
+      <form className="flex flex-col gap-10">
         <DetailsSection />
         <TypeSection />
       </form>
