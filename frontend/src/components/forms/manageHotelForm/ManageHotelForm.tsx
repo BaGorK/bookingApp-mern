@@ -20,7 +20,12 @@ export type HotelFormDataType = {
   childCount: number;
 };
 
-function ManageHotelForm() {
+type props = {
+  isPending: boolean;
+  onSaveHotel: (hotelFormData: FormData) => void;
+};
+
+function ManageHotelForm({ isPending, onSaveHotel }: props) {
   const formMethods = useForm<HotelFormDataType>();
   const { handleSubmit } = formMethods;
 
@@ -43,6 +48,8 @@ function ManageHotelForm() {
     Array.from(formDataJson.imageFiles).forEach((imageFile) => {
       formData.append(`imageFiles`, imageFile);
     });
+
+    onSaveHotel(formData);
   });
 
   return (
@@ -56,9 +63,10 @@ function ManageHotelForm() {
         <span className="flex justify-end">
           <button
             type="submit"
-            className="bg-blue-600 text-white py-2 px-4 rounded-full font-bold hover:bg-blue-500 text-xl"
+            disabled={isPending}
+            className="bg-blue-600 text-white py-2 px-4 rounded-full font-bold hover:bg-blue-500 disabled:bg-blue-300 text-xl"
           >
-            Save
+            {isPending ? "Saving..." : "Save"}
           </button>
         </span>
       </form>

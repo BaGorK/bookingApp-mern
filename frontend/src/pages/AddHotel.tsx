@@ -4,7 +4,7 @@ import * as apiClient from "../services/api-client";
 import toast from "react-hot-toast";
 
 export default function AddHotel() {
-  const { mutate, isLoading } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: apiClient.addMyHotel,
     onSuccess: () => {
       toast.success("Hotel save successfully");
@@ -19,6 +19,6 @@ export default function AddHotel() {
   };
 
   return (
-    <ManageHotelForm isLoading={isLoading} onSaveHotel={handleSaveHotel} />
+    <ManageHotelForm isPending={isPending} onSaveHotel={handleSaveHotel} />
   );
 }
