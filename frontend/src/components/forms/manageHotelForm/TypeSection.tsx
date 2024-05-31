@@ -21,6 +21,7 @@ export default function TypeSection() {
             <input
               type="radio"
               value={type}
+              className="hidden"
               {...register("type", { required: "this field is required" })}
             />
             <span>{type}</span>
