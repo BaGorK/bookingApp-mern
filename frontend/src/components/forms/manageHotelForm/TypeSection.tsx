@@ -18,8 +18,8 @@ export default function TypeSection() {
           <label
             className={
               typeWatch === type
-                ? "cursor-pointer bg-blue-300 text-sm rounded-full px-4 py-2 font-semibold"
-                : "cursor-pointer bg-gray-300 text-sm rounded-full px-4 py-2 font-semibold"
+                ? "cursor-pointer bg-blue-400 text-sm rounded-full px-4 py-2 transition duration-150  font-semibold"
+                : "cursor-pointer bg-gray-300 text-sm rounded-full px-4 py-2 font-semibold  transition duration-150  "
             }
           >
             <input
