@@ -16,6 +16,7 @@ export default function TypeSection() {
       <div className="grid grid-cols-5 gap-2">
         {hotelTypes.map((type) => (
           <label
+            key={type}
             className={
               typeWatch === type
                 ? "cursor-pointer bg-blue-400 text-sm rounded-full px-4 py-2 transition duration-150  font-semibold"

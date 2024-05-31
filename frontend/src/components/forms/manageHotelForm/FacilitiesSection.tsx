@@ -13,7 +13,7 @@ export default function FacilitiesSection() {
       <h2 className="text-2xl font-bold mb-3">Facilities</h2>
       <div className="grid grid-cols-5 gap-3">
         {hotelFacilities.map((facility) => (
-          <label className='flex gap-1'>
+          <label className="flex gap-1" key={facility}>
             <input
               type="checkbox"
               value={facility}
