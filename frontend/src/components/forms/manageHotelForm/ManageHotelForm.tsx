@@ -1,3 +1,6 @@
+import { FormProvider, useForm } from "react-hook-form";
+import DetailsSection from "./DetailsSection";
+
 export type HotelFormDataType = {
   name: string;
   city: string;
@@ -8,13 +11,21 @@ export type HotelFormDataType = {
   starRating: number;
   facilities: string[];
   imageFiles: FileList;
-  imageUrls: string[];
+  //   imageUrls: string[];
   adultCount: number;
   childCount: number;
 };
 
 function ManageHotelForm() {
-  return <div>ManageHotelForm</div>;
+  const formMethods = useForm<HotelFormDataType>();
+
+  return (
+    <FormProvider {...formMethods}>
+      <form>
+        <DetailsSection />
+      </form>
+    </FormProvider>
+  );
 }
 
 export default ManageHotelForm;
