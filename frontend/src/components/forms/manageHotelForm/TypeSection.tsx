@@ -3,7 +3,11 @@ import { hotelTypes } from "../../../config/hotel-options-config";
 import { HotelFormDataType } from "./ManageHotelForm";
 
 export default function TypeSection() {
-  const { register, watch } = useFormContext<HotelFormDataType>();
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useFormContext<HotelFormDataType>();
   const typeWatch = watch("type");
 
   return (
@@ -28,6 +32,11 @@ export default function TypeSection() {
           </label>
         ))}
       </div>
+      {errors.type && (
+        <p className="text-red-700 text-sm font-normal">
+          {errors.type.message}
+        </p>
+      )}
     </div>
   );
 }
