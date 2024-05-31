@@ -1,3 +1,5 @@
+import ManageHotelForm from "../components/forms/manageHotelForm/ManageHotelForm";
+
 export default function AddHotel() {
-  return <div>AddHotel</div>;
+  return <ManageHotelForm />;
 }
