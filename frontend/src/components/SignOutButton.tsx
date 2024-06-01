@@ -25,7 +25,7 @@ export default function SignOutButton() {
     <button
       onClick={() => mutate()}
       disabled={isPending}
-      className="text-blue-600 px-3 font-bold bg-white hover:bg-gray-100"
+      className="text-blue-600 px-3 py-2 rounded font-bold bg-white hover:bg-gray-100"
     >
       {isPending ? "Signing out..." : "Sign Out"}
     </button>
