@@ -90,7 +90,7 @@ Router.get("/:id", verifyToken, async (req: Request, res: Response) => {
 
   try {
     const hotel = await Hotel.find({ _id: id, userId: req.userId });
-    res.status(200).json(hotel)
+    res.status(200).json({ status: "success", data: hotel });
   } catch (error) {
     res.status(500).json({ message: "Error fetching hotel" });
   }

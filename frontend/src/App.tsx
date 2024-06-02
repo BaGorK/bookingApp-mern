@@ -50,7 +50,7 @@ export default function App() {
               }
             />
             <Route
-              path="/edit-hotels/:id"
+              path="/edit-hotels/:hotelId"
               element={
                 <Layout>
                   <EditHotel />
