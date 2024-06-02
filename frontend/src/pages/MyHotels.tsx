@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import * as apiClient from "../services/api-client";
-import { HotelType } from "../../../backend/src/models/hotelModel";
 import { BsBuilding, BsMap } from "react-icons/bs";
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
+import { HotelType } from "./../../../backend/src/shared/types";
 
 export default function MyHotels() {
   const { data = {}, isLoading } = useQuery({
