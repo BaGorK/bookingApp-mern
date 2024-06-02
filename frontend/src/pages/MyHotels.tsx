@@ -61,7 +61,7 @@ export default function MyHotels() {
             <span className="flex justify-end">
               <Link
                 className="flex bg-blue-600 text-white text-xl font-bold py-2 px-3 rounded hover:bg-blue-500"
-                to={`/edit-hotel/${hotel._id}`}
+                to={`/edit-hotels/${hotel._id}`}
               >
                 View Details
               </Link>
