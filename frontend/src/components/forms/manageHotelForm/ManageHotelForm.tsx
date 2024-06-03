@@ -17,14 +17,14 @@ export type HotelFormDataType = {
   starRating: number;
   facilities: string[];
   imageFiles: FileList;
-  //   imageUrls: string[];
+  imageUrls: string[];
   adultCount: number;
   childCount: number;
 };
 
 type props = {
   isPending: boolean;
-  hotel?: HotelType;
+  hotel: HotelType;
   onSaveHotel: (hotelFormData: FormData) => void;
 };
 

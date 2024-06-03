@@ -5,12 +5,31 @@ export default function ImagesSection() {
   const {
     register,
     formState: { errors },
+    watch,
   } = useFormContext<HotelFormDataType>();
+
+  const existingImageUrls = watch("imageUrls");
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-3">Images</h2>
       <div className="border rounded p-4 flex flex-col gap-4">
+        {existingImageUrls && (
+          <div className="grid grid-cols-6 gap-4">
+            {existingImageUrls.map((url, i) => (
+              <div className="relative group" key={i}>
+                <img
+                  src={url}
+                  alt={`image-${i + 1}`}
+                  className="min-h-full object-cover"
+                />
+                <button className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition duration-300 group-hover:opacity-100 text-white ">
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <input
           type="file"
           multiple
