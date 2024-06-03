@@ -4,17 +4,16 @@ import { fetchMyHotelById } from "../services/api-client";
 import { HotelType } from "../../../backend/src/shared/types";
 
 export default function EditHotel() {
-  const { hotelId } = useParams();
+  const { hotelId = "" } = useParams();
 
-  const { data: hotelData } = useQuery({
+  const { data } = useQuery({
     queryKey: ["fetchMyHotelById"],
-    queryFn: () => fetchMyHotelById(hotelId as string),
-    enabled: !!hotelId,
+    queryFn: () => fetchMyHotelById(hotelId),
   });
 
-  const { data } = hotelData as HotelType;
+  const { data: HotelData } = data as { data?: HotelType };
 
-  console.log(data);
+  console.log(HotelData);
 
   return (
     <>
