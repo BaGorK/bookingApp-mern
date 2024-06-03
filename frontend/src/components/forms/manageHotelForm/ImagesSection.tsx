@@ -6,9 +6,18 @@ export default function ImagesSection() {
     register,
     formState: { errors },
     watch,
+    setValue
   } = useFormContext<HotelFormDataType>();
 
   const existingImageUrls = watch("imageUrls");
+
+  const handleDelete = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    imageUrl: string
+  ) => {
+    e.preventDefault()
+    setValue('imageUrls', existingImageUrls.filter(url => url !== imageUrl))
+  };
 
   return (
     <div>
@@ -23,7 +32,7 @@ export default function ImagesSection() {
                   alt={`image-${i + 1}`}
                   className="min-h-full object-cover"
                 />
-                <button className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition duration-300 group-hover:opacity-100 text-white ">
+                <button onClick={e => handleDelete(e, url)} className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition duration-300 group-hover:opacity-100 text-white ">
                   Delete
                 </button>
               </div>
