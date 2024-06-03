@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { fetchMyHotelById } from "../services/api-client";
 import { HotelType } from "../../../backend/src/shared/types";
+import ManageHotelForm from "../components/forms/manageHotelForm/ManageHotelForm";
 
 export default function EditHotel() {
   const { hotelId = "" } = useParams();
@@ -11,13 +12,11 @@ export default function EditHotel() {
     queryFn: () => fetchMyHotelById(hotelId),
   });
 
-  const { data: HotelData } = data as { data?: HotelType };
-
-  console.log(HotelData);
+  const { data: hotelData } = data as { data?: HotelType };
 
   return (
     <>
-      <div className="">hotel</div>
+      <ManageHotelForm hotel={hotelData} />
     </>
   );
 }

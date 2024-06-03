@@ -4,6 +4,8 @@ import TypeSection from "./TypeSection";
 import FacilitiesSection from "./FacilitiesSection";
 import GuestsSection from "./GuestsSection";
 import ImagesSection from "./ImagesSection";
+import { HotelType } from "../../../../../backend/src/shared/types";
+import { useEffect } from "react";
 
 export type HotelFormDataType = {
   name: string;
@@ -22,12 +24,17 @@ export type HotelFormDataType = {
 
 type props = {
   isPending: boolean;
+  hotel?: HotelType;
   onSaveHotel: (hotelFormData: FormData) => void;
 };
 
-function ManageHotelForm({ isPending, onSaveHotel }: props) {
+function ManageHotelForm({ isPending, onSaveHotel, hotel }: props) {
   const formMethods = useForm<HotelFormDataType>();
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, reset } = formMethods;
+
+  useEffect(() => {
+    reset(hotel);
+  }, [hotel, reset]);
 
   const onSubmit = handleSubmit((formDataJson: HotelFormDataType) => {
     const formData = new FormData();
