@@ -10,6 +10,16 @@ declare global {
   }
 }
 
+/**
+ * Middleware function to verify the authenticity of a JSON Web Token (JWT).
+ * If the token is valid, it extracts the user ID from the token payload and attaches it to the request object.
+ * If the token is invalid or missing, it returns a 401 Unauthorized response.
+ * 
+ * @param req - The Express request object.
+ * @param res - The Express response object.
+ * @param next - The next middleware function.
+ * @returns A 401 Unauthorized response if the token is missing or invalid, otherwise calls the next middleware function.
+ */
 export const verifyToken = (
   req: Request,
   res: Response,
