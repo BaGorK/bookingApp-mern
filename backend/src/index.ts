@@ -1,15 +1,16 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
+import path from "path";
+import { v2 as cloudinary } from "cloudinary";
 import express, { Request, Response } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+
 import userRouter from "./routes/userRoutes";
 import authRouter from "./routes/authRoutes";
-import path from "path";
-import { v2 as cloudinary } from "cloudinary";
 import myHotelRouter from "./routes/myHotelRoutes";
 
 cloudinary.config({
@@ -26,8 +27,8 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // is used for parsing application/json request bodies.
+app.use(express.urlencoded({ extended: true })); //  is used for parsing x-www-form-urlencoded request bodies
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -47,6 +48,10 @@ app.use("/api/v1/myHotels", myHotelRouter);
 
 app.get("*", (req: Request, res: Response) => {
   return res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+});
+
+app.use("*", (req: Request, res: Response) => {
+  return res.status(404).json({ message: "Route not found" });
 });
 
 const PORT = process.env.PORT || 3000;
