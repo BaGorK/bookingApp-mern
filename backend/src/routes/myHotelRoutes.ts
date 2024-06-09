@@ -138,6 +138,8 @@ Router.put(
       ];
 
       await hotel.save();
+
+      res.status(200).json({ message: 'Hotel updated', data: hotel });
     } catch (error) {
       res.status(500).json({ message: 'Something went wrong' });
     }
