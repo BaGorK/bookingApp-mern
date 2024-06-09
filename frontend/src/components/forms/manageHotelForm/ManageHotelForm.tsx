@@ -40,6 +40,10 @@ function ManageHotelForm({ isPending, onSaveHotel, hotel }: props) {
   const onSubmit = handleSubmit((formDataJson: HotelFormDataType) => {
     const formData = new FormData();
 
+    if (hotel) {
+      formData.append('hotelId', hotel._id);
+    }
+
     formData.append('name', formDataJson.name);
     formData.append('city', formDataJson.city);
     formData.append('country', formDataJson.country);
@@ -53,6 +57,12 @@ function ManageHotelForm({ isPending, onSaveHotel, hotel }: props) {
     formDataJson.facilities.forEach((facility, index) => {
       formData.append(`facilities[${index}]`, facility);
     });
+
+    if (formDataJson.imageUrls) {
+      formDataJson.imageUrls.forEach((url, i) => {
+        formData.append(`imageUrls[${i}]`, url);
+      });
+    }
 
     Array.from(formDataJson.imageFiles).forEach((imageFile) => {
       formData.append(`imageFiles`, imageFile);
