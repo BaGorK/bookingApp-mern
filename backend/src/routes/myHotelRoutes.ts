@@ -17,6 +17,19 @@ const upload = multer({
   },
 });
 
+async function uploadImages(imageFiles: Express.Multer.File[]) {
+  const uploadPromises = imageFiles.map(async (image) => {
+    const b64 = Buffer.from(image.buffer).toString('base64');
+    let dataURI = `data:${image.mimetype};base64,${b64}`;
+    const res = await cloudinary.v2.uploader.upload(dataURI);
+
+    return res.url;
+  });
+
+  const imageUrls = await Promise.all(uploadPromises);
+  return imageUrls;
+}
+
 // create  hotels
 // api/v1/myHotels
 Router.post(
@@ -46,15 +59,8 @@ Router.post(
       const newHotel: HotelType = req.body;
 
       // 1. upload image to cloudinary
-      const uploadPromises = imageFiles.map(async (image) => {
-        const b64 = Buffer.from(image.buffer).toString('base64');
-        let dataURI = `data:${image.mimetype};base64,${b64}`;
-        const res = await cloudinary.v2.uploader.upload(dataURI);
+      const imageUrls = await uploadImages(imageFiles);
 
-        return res.url;
-      });
-
-      const imageUrls = await Promise.all(uploadPromises);
       // 2. if (upload) add the urls to the new hotel
       newHotel.imageUrls = imageUrls;
       newHotel.lastUpdated = new Date();
