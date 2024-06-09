@@ -1,16 +1,16 @@
-import { HotelType } from "../../../backend/src/shared/types";
-import { RegisterFormDataType } from "../pages/Register";
-import { SignInFormDataType } from "../pages/SignIn";
+// import { HotelType } from '../../../backend/src/shared/types';
+import { RegisterFormDataType } from '../pages/Register';
+import { SignInFormDataType } from '../pages/SignIn';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export const register = async (formData: RegisterFormDataType) => {
   const res = await fetch(`${API_BASE_URL}/api/v1/users/register`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     body: JSON.stringify(formData),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
 
@@ -23,11 +23,11 @@ export const register = async (formData: RegisterFormDataType) => {
 
 export const validateToken = async () => {
   const res = await fetch(`${API_BASE_URL}/api/v1/auth/validate-token`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   if (!res.ok) {
-    throw new Error("Token invalid");
+    throw new Error('Token invalid');
   }
   const data = await res.json();
 
@@ -36,11 +36,11 @@ export const validateToken = async () => {
 
 export const signIn = async (formData: SignInFormDataType) => {
   const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
-    method: "post",
-    credentials: "include",
+    method: 'post',
+    credentials: 'include',
     body: JSON.stringify(formData),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   });
 
@@ -55,8 +55,8 @@ export const signIn = async (formData: SignInFormDataType) => {
 
 export const signOut = async () => {
   const res = await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
-    credentials: "include",
-    method: "post",
+    credentials: 'include',
+    method: 'post',
   });
 
   const data = await res.json();
@@ -70,25 +70,25 @@ export const signOut = async () => {
 
 export const addMyHotel = async (hotelFormData: FormData) => {
   const res = await fetch(`${API_BASE_URL}/api/v1/myHotels`, {
-    method: "post",
-    credentials: "include",
+    method: 'post',
+    credentials: 'include',
     body: hotelFormData,
   });
 
-  if (!res.ok) throw new Error("Failed to add hotel");
+  if (!res.ok) throw new Error('Failed to add hotel');
 
   const data = await res.json();
 
   return data;
 };
 
-export const fetchMyHotels = async (): Promise<HotelType[]> => {
+export const fetchMyHotels = async () => {
   const res = await fetch(`${API_BASE_URL}/api/v1/myHotels`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   if (!res.ok) {
-    throw new Error("Error fetching hotels");
+    throw new Error('Error fetching hotels');
   }
 
   const data = await res.json();
@@ -96,13 +96,13 @@ export const fetchMyHotels = async (): Promise<HotelType[]> => {
   return data;
 };
 
-export const fetchMyHotelById = async (hotelId: string): Promise<HotelType> => {
+export const fetchMyHotelById = async (hotelId: string) => {
   const res = await fetch(`${API_BASE_URL}/api/v1/myHotels/${hotelId}`, {
-    credentials: "include",
+    credentials: 'include',
   });
 
   if (!res.ok) {
-    throw new Error("Error fetching Hotels");
+    throw new Error('Error fetching Hotels');
   }
   const data = await res.json();
   return data;

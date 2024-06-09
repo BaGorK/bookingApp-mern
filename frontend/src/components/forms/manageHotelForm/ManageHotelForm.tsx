@@ -1,11 +1,12 @@
-import { FormProvider, useForm } from "react-hook-form";
-import DetailsSection from "./DetailsSection";
-import TypeSection from "./TypeSection";
-import FacilitiesSection from "./FacilitiesSection";
-import GuestsSection from "./GuestsSection";
-import ImagesSection from "./ImagesSection";
-import { HotelType } from "../../../../../backend/src/shared/types";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import DetailsSection from './DetailsSection';
+import TypeSection from './TypeSection';
+import FacilitiesSection from './FacilitiesSection';
+import GuestsSection from './GuestsSection';
+import ImagesSection from './ImagesSection';
+import { HotelType } from '../../../../../backend/src/shared/types';
 
 export type HotelFormDataType = {
   name: string;
@@ -24,7 +25,7 @@ export type HotelFormDataType = {
 
 type props = {
   isPending: boolean;
-  hotel: HotelType;
+  hotel?: HotelType;
   onSaveHotel: (hotelFormData: FormData) => void;
 };
 
@@ -38,15 +39,16 @@ function ManageHotelForm({ isPending, onSaveHotel, hotel }: props) {
 
   const onSubmit = handleSubmit((formDataJson: HotelFormDataType) => {
     const formData = new FormData();
-    formData.append("name", formDataJson.name);
-    formData.append("city", formDataJson.city);
-    formData.append("country", formDataJson.country);
-    formData.append("description", formDataJson.description);
-    formData.append("type", formDataJson.type);
-    formData.append("pricePerNight", formDataJson.pricePerNight.toString());
-    formData.append("starRating", formDataJson.starRating.toString());
-    formData.append("adultCount", formDataJson.adultCount.toString());
-    formData.append("childCount", formDataJson.childCount.toString());
+
+    formData.append('name', formDataJson.name);
+    formData.append('city', formDataJson.city);
+    formData.append('country', formDataJson.country);
+    formData.append('description', formDataJson.description);
+    formData.append('type', formDataJson.type);
+    formData.append('pricePerNight', formDataJson.pricePerNight.toString());
+    formData.append('starRating', formDataJson.starRating.toString());
+    formData.append('adultCount', formDataJson.adultCount.toString());
+    formData.append('childCount', formDataJson.childCount.toString());
 
     formDataJson.facilities.forEach((facility, index) => {
       formData.append(`facilities[${index}]`, facility);
@@ -61,19 +63,19 @@ function ManageHotelForm({ isPending, onSaveHotel, hotel }: props) {
 
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={onSubmit} className="flex flex-col gap-10">
+      <form onSubmit={onSubmit} className='flex flex-col gap-10'>
         <DetailsSection />
         <TypeSection />
         <FacilitiesSection />
         <GuestsSection />
         <ImagesSection />
-        <span className="flex justify-end">
+        <span className='flex justify-end'>
           <button
-            type="submit"
+            type='submit'
             disabled={isPending}
-            className="bg-blue-600 text-white py-2 px-4 rounded-full font-bold hover:bg-blue-500 disabled:bg-blue-300 text-xl"
+            className='bg-blue-600 text-white py-2 px-4 rounded font-bold hover:bg-blue-500 disabled:bg-blue-300 text-xl'
           >
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? 'Saving...' : 'Save'}
           </button>
         </span>
       </form>
