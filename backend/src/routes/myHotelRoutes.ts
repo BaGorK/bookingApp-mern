@@ -106,6 +106,24 @@ Router.put(
   upload.array('imageFiles'),
   async (req: Request, res: Response) => {
     try {
+      const updatedHotel: HotelType = req.body;
+
+      updatedHotel.lastUpdated = new Date();
+
+      const hotel = await Hotel.findOneAndUpdate(
+        {
+          _id: req.params.hotelId,
+          userId: req.userId,
+        },
+        updatedHotel,
+        { new: true }
+      );
+
+      if (!hotel) {
+        return res.status(404).json({ message: 'Hotel not found' });
+      }
+
+      const files = req.files as Express.Multer.File[];
     } catch (error) {
       res.status(500).json({ message: 'Something went wrong' });
     }
