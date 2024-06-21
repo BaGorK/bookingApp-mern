@@ -1,18 +1,18 @@
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 
-import path from "path";
-import { v2 as cloudinary } from "cloudinary";
-import express, { Request, Response } from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-import morgan from "morgan";
-import cookieParser from "cookie-parser";
+import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
-import userRouter from "./routes/userRoutes";
-import authRouter from "./routes/authRoutes";
-import myHotelRouter from "./routes/myHotelRoutes";
-import hotelRouter from './routes/hotels'
+import userRouter from './routes/userRoutes';
+import authRouter from './routes/authRoutes';
+import myHotelRouter from './routes/myHotelRoutes';
+import hotelRouter from './routes/hotels';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -22,11 +22,11 @@ cloudinary.config({
 
 const app = express();
 
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
 }
 
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
 
 app.use(express.json()); // is used for parsing application/json request bodies.
 app.use(express.urlencoded({ extended: true })); //  is used for parsing x-www-form-urlencoded request bodies
@@ -39,21 +39,21 @@ app.use(
 
 app.use(cookieParser());
 
-app.get("/test", (req: Request, res: Response) => {
-  res.send("Hello World!");
+app.get('/test', (req: Request, res: Response) => {
+  res.send('Hello World!');
 });
 
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/myHotels", myHotelRouter);
-app.use('/api/hotels', hotelRouter)
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/myHotels', myHotelRouter);
+app.use('/api/v1/hotels', hotelRouter);
 
-app.get("*", (req: Request, res: Response) => {
-  return res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+app.get('*', (req: Request, res: Response) => {
+  return res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 
-app.use("*", (req: Request, res: Response) => {
-  return res.status(404).json({ message: "Route not found" });
+app.use('*', (req: Request, res: Response) => {
+  return res.status(404).json({ message: 'Route not found' });
 });
 
 const PORT = process.env.PORT || 3000;

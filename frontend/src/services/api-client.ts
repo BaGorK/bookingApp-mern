@@ -1,4 +1,5 @@
 // import { HotelType } from '../../../backend/src/shared/types';
+import { HotelSearchResponse } from '../../../backend/src/shared/types';
 import { RegisterFormDataType } from '../pages/Register';
 import { SignInFormDataType } from '../pages/SignIn';
 
@@ -123,4 +124,32 @@ export const updateMyHotelById = async (hotelFormData: FormData) => {
   const data = await res.json();
 
   return data;
+};
+
+export type SearchParams = {
+  destination?: string;
+  checkIn?: string;
+  checkOut?: string;
+  adultCount?: string;
+  childCount?: string;
+  page?: string;
+};
+
+export const searchHotels = async (searchParams: SearchParams) => {
+  const queryParams = new URLSearchParams();
+
+  queryParams.append('destination', searchParams.destination || '');
+  queryParams.append('checkIn', searchParams.checkIn || '');
+  queryParams.append('checkOut', searchParams.checkOut || '');
+  queryParams.append('adultCount', searchParams.adultCount || '');
+  queryParams.append('childCount', searchParams.childCount || '');
+  queryParams.append('page', searchParams.page || '');
+
+  const res = await fetch(
+    `${API_BASE_URL}/api/v1/hotels/search?${queryParams.toString()}`
+  );
+
+  const data = await res.json();
+
+  return data as HotelSearchResponse;
 };
