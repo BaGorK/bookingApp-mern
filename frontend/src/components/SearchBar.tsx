@@ -1,8 +1,14 @@
 import { FormEvent, useState } from 'react';
-import { useSearchContext } from '../contexts/SearchContext';
 import { MdTravelExplore } from 'react-icons/md';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useNavigate } from 'react-router-dom';
+
+import { useSearchContext } from '../contexts/SearchContext';
 
 const SearchBar = () => {
+  const navigate = useNavigate();
+
   const search = useSearchContext();
 
   const [destination, setDestination] = useState<string>(search.destination);
@@ -11,7 +17,7 @@ const SearchBar = () => {
   const [adultCount, setAdultCount] = useState<number>(search.adultCount);
   const [childCount, setChildCount] = useState<number>(search.childCount);
 
-  const handleSubmit = (event: FormEventt) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     search.saveSearchValues(
       destination,
@@ -20,7 +26,13 @@ const SearchBar = () => {
       adultCount,
       childCount
     );
+
+    navigate('/search');
   };
+
+  const minDate = new Date();
+  const maxDate = new Date();
+  maxDate.setFullYear(maxDate.getFullYear() + 1);
 
   return (
     <form
@@ -36,6 +48,70 @@ const SearchBar = () => {
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
         />
+      </div>
+
+      <div className='flex bg-white px-2 py-1 gap-2'>
+        <label className='items-center flex'>
+          Adults:
+          <input
+            className='w-full p-1 focus:outline-none font-bold'
+            type='number'
+            min={1}
+            max={10}
+            value={adultCount}
+            onChange={(e) => setAdultCount(parseInt(e.target.value))}
+          />
+        </label>
+        <label className='items-center flex'>
+          Children:
+          <input
+            className='w-full p-1 focus:outline-none font-bold'
+            type='number'
+            min={1}
+            max={10}
+            value={childCount}
+            onChange={(e) => setChildCount(parseInt(e.target.value))}
+          />
+        </label>
+      </div>
+
+      <div>
+        <DatePicker
+          selected={checkIn}
+          onChange={(date) => setCheckIn(date as Date)}
+          selectsStart
+          startDate={checkIn}
+          endDate={checkOut}
+          minDate={minDate}
+          maxDate={maxDate}
+          placeholderText='Check-in Date'
+          className='min-w-full bg-white p-2 focus:outline-none'
+          wrapperClassName='min-w-full'
+        />
+      </div>
+
+      <div>
+        <DatePicker
+          selected={checkOut}
+          onChange={(date) => setCheckOut(date as Date)}
+          selectsStart
+          startDate={checkIn}
+          endDate={checkOut}
+          minDate={minDate}
+          maxDate={maxDate}
+          placeholderText='Check-in Date'
+          className='min-w-full bg-white p-2 focus:outline-none'
+          wrapperClassName='min-w-full'
+        />
+      </div>
+
+      <div className='flex gap-1'>
+        <button className='w-2/3 transition duration-300 bg-blue-600 text-white h-full px-3 py-2 rounded font-bold text-xl hover:bg-blue-500'>
+          Search
+        </button>
+        <button className='w-1/3 transition duration-300 bg-red-600 text-white h-full px-3 py-2 rounded font-bold text-xl hover:bg-red-500'>
+          Clear
+        </button>
       </div>
     </form>
   );
