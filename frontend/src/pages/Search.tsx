@@ -4,10 +4,12 @@ import * as apiClient from '../services/api-client';
 import { useState } from 'react';
 import SearchResultCard from '../components/SearchResultsCard';
 import Pagination from '../components/Pagination';
+import StarRatingFilter from '../components/StarRatingFilter';
 
 export default function Search() {
   const search = useSearchContext();
   const [page, setPage] = useState<number>(1);
+  const [selectedStars, setSelectedStars] = useState<string[]>([]);
 
   const searchParams = {
     destination: search.destination,
@@ -16,6 +18,7 @@ export default function Search() {
     adultCount: search.adultCount.toString(),
     childCount: search.childCount.toString(),
     page: page.toString(),
+    stars: selectedStars,
   };
 
   const { data: hotelsDate, isLoading } = useQuery({
@@ -27,6 +30,16 @@ export default function Search() {
     setPage(page);
   };
 
+  const handleStarsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const starRating = e.target.value;
+
+    setSelectedStars((prevStars) =>
+      e.target.checked
+        ? [...prevStars, starRating]
+        : prevStars.filter((star) => star !== starRating)
+    );
+  };
+
   // if (isLoading || !hotelsDate) return <div>Loading...</div>;
 
   return (
@@ -36,6 +49,10 @@ export default function Search() {
           <h3 className='text-lg font-semibold border-b border-slate-300 pb-5'>
             Filter by:
           </h3>
+          <StarRatingFilter
+            selectedStars={selectedStars}
+            onChange={handleStarsChange}
+          />
         </div>
       </div>
 
