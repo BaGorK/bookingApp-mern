@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import * as apiClient from './../services/api-client';
 import { AiFillStar } from 'react-icons/ai';
+import GuestInfoForm from '../components/forms/GuestInfoForm/GuestInfoForm';
 
 export default function Detail() {
   const { hotelId } = useParams();
@@ -41,7 +42,10 @@ export default function Detail() {
 
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-2'>
         {hotel.facilities.map((facility: string) => (
-          <div key={facility} className='border border-slate-300 rounded-sm p-3'>
+          <div
+            key={facility}
+            className='border border-slate-300 rounded-sm p-3'
+          >
             {facility}
           </div>
         ))}
@@ -50,10 +54,10 @@ export default function Detail() {
       <div className='grid grid-cols-1 lg:grid-cols-[2fr_1fr]'>
         <div className='whitespace-pre-line'>{hotel.description}</div>
         <div className='h-fit'>
-          {/* <GuestInfoForm
+          <GuestInfoForm
             pricePerNight={hotel.pricePerNight}
             hotelId={hotel._id}
-          /> */}
+          />
         </div>
       </div>
     </div>
