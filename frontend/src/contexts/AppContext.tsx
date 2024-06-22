@@ -29,11 +29,13 @@ const showToast = (toastMessage: ToastMessage) => {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 function AppContextProvider(props: { children: ReactNode }) {
-  const { isError } = useQuery({
+  const { isError, isLoading } = useQuery({
     queryKey: ['validateToken'],
     queryFn: apiClient.validateToken,
     retry: false,
   });
+
+  if (isLoading) return;
 
   return (
     <AppContext.Provider value={{ showToast, isLoggedIn: !isError }}>
