@@ -5,11 +5,13 @@ import { useState } from 'react';
 import SearchResultCard from '../components/SearchResultsCard';
 import Pagination from '../components/Pagination';
 import StarRatingFilter from '../components/StarRatingFilter';
+import HotelTypesFilter from '../components/HotelTypesFilter';
 
 export default function Search() {
   const search = useSearchContext();
   const [page, setPage] = useState<number>(1);
   const [selectedStars, setSelectedStars] = useState<string[]>([]);
+  const [selectedHotelTypes, setSelectedHotelTypes] = useState<string[]>([]);
 
   const searchParams = {
     destination: search.destination,
@@ -19,6 +21,7 @@ export default function Search() {
     childCount: search.childCount.toString(),
     page: page.toString(),
     stars: selectedStars,
+    types: selectedHotelTypes,
   };
 
   const { data: hotelsDate, isLoading } = useQuery({
@@ -40,6 +43,15 @@ export default function Search() {
     );
   };
 
+  const handleHotelTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const hotelType = e.target.value;
+
+    setSelectedHotelTypes((prevHotelTypes) =>
+      e.target.checked
+        ? [...prevHotelTypes, hotelType]
+        : prevHotelTypes.filter((type) => type !== hotelType)
+    );
+  };
   // if (isLoading || !hotelsDate) return <div>Loading...</div>;
 
   return (
@@ -52,6 +64,10 @@ export default function Search() {
           <StarRatingFilter
             selectedStars={selectedStars}
             onChange={handleStarsChange}
+          />
+          <HotelTypesFilter
+            onChange={handleHotelTypeChange}
+            selectedHotelTypes={selectedHotelTypes}
           />
         </div>
       </div>
