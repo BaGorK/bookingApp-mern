@@ -3,6 +3,7 @@ import { useSearchContext } from '../contexts/SearchContext';
 import * as apiClient from '../services/api-client';
 import { useState } from 'react';
 import SearchResultCard from '../components/SearchResultsCard';
+import Pagination from '../components/Pagination';
 
 export default function Search() {
   const search = useSearchContext();
@@ -21,6 +22,12 @@ export default function Search() {
     queryKey: ['searchHotels', searchParams],
     queryFn: () => apiClient.searchHotels(searchParams),
   });
+
+  const onPageChange = (page: number) => {
+    setPage(page);
+  };
+
+  // if (isLoading || !hotelsDate) return <div>Loading...</div>;
 
   return (
     <div className='grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5'>
@@ -42,6 +49,13 @@ export default function Search() {
         {hotelsDate?.data.map((hotel) => (
           <SearchResultCard key={hotel._id} hotel={hotel} />
         ))}
+        <div>
+          <Pagination
+            page={hotelsDate?.pagination.page || 1}
+            onPageChange={onPageChange}
+            pages={hotelsDate?.pagination.pages || 1}
+          />
+        </div>
       </div>
     </div>
   );
