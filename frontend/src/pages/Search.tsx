@@ -7,6 +7,7 @@ import Pagination from '../components/Pagination';
 import StarRatingFilter from '../components/StarRatingFilter';
 import HotelTypesFilter from '../components/HotelTypesFilter';
 import FacilitiesFilter from '../components/FacilitiesFilter';
+import PriceFilter from '../components/PriceFilter';
 
 export default function Search() {
   const search = useSearchContext();
@@ -14,6 +15,9 @@ export default function Search() {
   const [selectedStars, setSelectedStars] = useState<string[]>([]);
   const [selectedHotelTypes, setSelectedHotelTypes] = useState<string[]>([]);
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
+  const [selectedPrice, setSelectedPrice] = useState<number | undefined>(
+    undefined
+  );
 
   const searchParams = {
     destination: search.destination,
@@ -25,6 +29,7 @@ export default function Search() {
     stars: selectedStars,
     types: selectedHotelTypes,
     facilities: selectedFacilities,
+    maxPrice: selectedPrice,
   };
 
   const { data: hotelsDate, isLoading } = useQuery({
@@ -85,6 +90,10 @@ export default function Search() {
           <FacilitiesFilter
             onChange={handleFacilitiesChange}
             selectedFacilities={selectedFacilities}
+          />
+          <PriceFilter
+            selectedPrice={selectedPrice}
+            onChange={(value?: number) => setSelectedPrice(value)}
           />
         </div>
       </div>
