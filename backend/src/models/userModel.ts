@@ -1,13 +1,6 @@
 import mongoose from 'mongoose';
 import { hashPassword } from '../utils/passwordUtils';
-
-export type UserType = {
-  _id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-};
+import { UserType } from '../shared/types';
 
 const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
