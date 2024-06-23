@@ -5,6 +5,20 @@ import { SignInFormDataType } from '../pages/SignIn';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
+export const fetchCurrentUser = async () => {
+  const res = await fetch(`${API_BASE_URL}/api/v1/users/me`, {
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error('Error fetching user');
+  }
+
+  const data = await res.json();
+
+  return data;
+};
+
 export const register = async (formData: RegisterFormDataType) => {
   const res = await fetch(`${API_BASE_URL}/api/v1/users/register`, {
     method: 'POST',
@@ -150,16 +164,15 @@ export const searchHotels = async (searchParams: SearchParams) => {
   queryParams.append('childCount', searchParams.childCount || '');
   queryParams.append('page', searchParams.page || '');
 
-    queryParams.append('maxPrice', searchParams.maxPrice || '');
-    queryParams.append('sortOption', searchParams.sortOption || '');
+  queryParams.append('maxPrice', searchParams.maxPrice || '');
+  queryParams.append('sortOption', searchParams.sortOption || '');
 
-    searchParams.facilities?.forEach((facility) =>
-      queryParams.append('facilities', facility)
-    );
+  searchParams.facilities?.forEach((facility) =>
+    queryParams.append('facilities', facility)
+  );
 
-    searchParams.types?.forEach((type) => queryParams.append('types', type));
-    searchParams.stars?.forEach((star) => queryParams.append('stars', star));
-
+  searchParams.types?.forEach((type) => queryParams.append('types', type));
+  searchParams.stars?.forEach((star) => queryParams.append('stars', star));
 
   const res = await fetch(
     `${API_BASE_URL}/api/v1/hotels/search?${queryParams.toString()}`
@@ -173,11 +186,11 @@ export const searchHotels = async (searchParams: SearchParams) => {
 export const fetchHotelById = async (hotelId: string) => {
   const res = await fetch(`${API_BASE_URL}/api/v1/hotels/${hotelId}`);
 
-  if(!res.ok) {
-    throw new Error('Error fetching Hotel')
+  if (!res.ok) {
+    throw new Error('Error fetching Hotel');
   }
 
   const data = await res.json();
 
-  return data
-}
+  return data;
+};
