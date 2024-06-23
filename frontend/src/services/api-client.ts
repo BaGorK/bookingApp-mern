@@ -1,11 +1,14 @@
 // import { HotelType } from '../../../backend/src/shared/types';
-import { HotelSearchResponse } from '../../../backend/src/shared/types';
+import {
+  HotelSearchResponse,
+  UserType,
+} from '../../../backend/src/shared/types';
 import { RegisterFormDataType } from '../pages/Register';
 import { SignInFormDataType } from '../pages/SignIn';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
-export const fetchCurrentUser = async () => {
+export const fetchCurrentUser = async (): Promise<UserType> => {
   const res = await fetch(`${API_BASE_URL}/api/v1/users/me`, {
     credentials: 'include',
   });
