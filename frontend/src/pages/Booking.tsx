@@ -4,12 +4,13 @@ import BookingForm from '../components/forms/BookingForm/BookingForm';
 import { useSearchContext } from '../contexts/SearchContext';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import BookingDetailsSummary from '../components/BookingDetailsSummary';
 
 export default function Booking() {
   const search = useSearchContext();
   const { hotelId } = useParams();
 
-  const [numOfNight, setNumOfNight] = useState<number>(0);
+  const [numOfNights, setNumOfNights] = useState<number>(0);
 
   useEffect(() => {
     if (search.checkIn && search.checkOut) {
@@ -17,7 +18,7 @@ export default function Booking() {
         Math.abs(search.checkOut.getTime() - search.checkIn.getTime()) /
         (1000 * 60 * 60 * 24);
 
-      setNumOfNight(Math.ceil(nights));
+      setNumOfNights(Math.ceil(nights));
     }
   }, [search.checkIn, search.checkOut]);
 
@@ -35,7 +36,14 @@ export default function Booking() {
 
   return (
     <div className='grid md:grid-cols-[1fr_2fr]'>
-      <div className='bg-green-200'>Booking Details page</div>
+      <BookingDetailsSummary
+        checkIn={search.checkIn}
+        checkOut={search.checkOut}
+        adultCount={search.adultCount}
+        childCount={search.childCount}
+        numberOfNights={numOfNights}
+        hotel={hotel}
+      />
       {currentUser && <BookingForm currentUser={currentUser} />}
     </div>
   );
