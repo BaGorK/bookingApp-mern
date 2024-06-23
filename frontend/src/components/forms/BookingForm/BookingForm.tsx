@@ -12,7 +12,13 @@ type BookingFormData = {
 };
 
 export default function BookingForm({ currentUser }: Props) {
-  const { handleSubmit, register } = useForm<BookingFormData>();
+  const { handleSubmit, register } = useForm<BookingFormData>({
+    defaultValues: {
+      firstName: currentUser.firstName,
+      lastName: currentUser.lastName,
+      email: currentUser.email,
+    },
+  });
 
   return (
     <form
