@@ -13,7 +13,7 @@ export default function Booking() {
   return (
     <div className='grid md:grid-cols-[1fr_2fr]'>
       <div className='bg-green-200'>Booking Details page</div>
-      <BookingForm currentUser={currentUser} />
+      {currentUser && <BookingForm currentUser={currentUser} />}
     </div>
   );
 }
