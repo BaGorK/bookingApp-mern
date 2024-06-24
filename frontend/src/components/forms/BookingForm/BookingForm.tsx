@@ -1,8 +1,13 @@
 import { useForm } from 'react-hook-form';
-import { UserType } from '../../../../../backend/src/shared/types';
+import {
+  PaymentIntentResponse,
+  UserType,
+} from '../../../../../backend/src/shared/types';
+import { CardElement } from '@stripe/react-stripe-js';
 
 type Props = {
   currentUser: UserType;
+  paymentIntent: PaymentIntentResponse;
 };
 
 type BookingFormData = {
@@ -11,8 +16,8 @@ type BookingFormData = {
   email: string;
 };
 
-export default function BookingForm({ currentUser }: Props) {
-  const { handleSubmit, register } = useForm<BookingFormData>({
+export default function BookingForm({ currentUser, paymentIntent }: Props) {
+  const { register } = useForm<BookingFormData>({
     defaultValues: {
       firstName: currentUser.firstName,
       lastName: currentUser.lastName,
@@ -58,6 +63,35 @@ export default function BookingForm({ currentUser }: Props) {
             {...register('email')}
           />
         </label>
+      </div>
+
+      <div className='space-y-2'>
+        <h2 className='text-xl font-semibold'>Your Price Summary</h2>
+
+        <div className='bg-blue-200 p-4 rounded-md'>
+          <div className='font-semibold text-lg'>
+            Total Cost: £{paymentIntent.totalCost.toFixed(2)}
+          </div>
+          <div className='text-xs'>Includes taxes and charges</div>
+        </div>
+      </div>
+
+      <div className='space-y-2'>
+        <h3 className='text-xl font-semibold'> Payment Details</h3>
+        <CardElement
+          id='payment-element'
+          className='border rounded-md p-2 text-sm'
+        />
+      </div>
+
+      <div className='flex justify-end'>
+        <button
+          // disabled={isLoading}
+          type='submit'
+          className='bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-md disabled:bg-gray-500'
+        >
+          {/* {isLoading ? 'Saving...' : 'Confirm Booking'} */}
+        </button>
       </div>
     </form>
   );
