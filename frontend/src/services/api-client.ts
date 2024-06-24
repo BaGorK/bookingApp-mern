@@ -197,3 +197,27 @@ export const fetchHotelById = async (hotelId: string) => {
 
   return data;
 };
+
+export const createPaymentIntent = async (
+  hotelId: string,
+  numOfNights: string
+) => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/v1/hotels/${hotelId}/payment-intent`,
+    {
+      credentials: 'include',
+      method: 'post',
+      body: JSON.stringify({ numOfNights }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Error creating payment intent');
+  }
+
+  const data = await res.json();
+  return data
+};
