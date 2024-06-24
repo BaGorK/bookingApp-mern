@@ -3,21 +3,25 @@ import {
   PaymentIntentResponse,
   UserType,
 } from '../../../../../backend/src/shared/types';
-import { CardElement } from '@stripe/react-stripe-js';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { StripeCardElement } from '@stripe/stripe-js';
 
 type Props = {
   currentUser: UserType;
   paymentIntent: PaymentIntentResponse;
 };
 
-type BookingFormData = {
+export type BookingFormData = {
   firstName: string;
   lastName: string;
   email: string;
 };
 
 export default function BookingForm({ currentUser, paymentIntent }: Props) {
-  const { register } = useForm<BookingFormData>({
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const { handleSubmit, register } = useForm<BookingFormData>({
     defaultValues: {
       firstName: currentUser.firstName,
       lastName: currentUser.lastName,
@@ -25,9 +29,25 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
     },
   });
 
+  const onSubmit = async (formData: BookingFormData) => {
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const result = await stripe.confirmCardPayment(paymentIntent.clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement) as StripeCardElement,
+      },
+    });
+
+    if (result.paymentIntent?.status === 'succeeded') {
+      // book the room
+    }
+  };
+
   return (
     <form
-      // onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       className='grid grid-cols-1 gap-5 rounded-lg border border-slate-300 p-5'
     >
       <span className='text-3xl font-bold'>Confirm Your Details</span>
