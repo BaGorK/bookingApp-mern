@@ -39,13 +39,16 @@ export default function Booking() {
     queryFn: fetchCurrentUser,
   });
 
-  const { data: paymentIntentData } = useQuery({
-    queryKey: ['createPaymentIntent'],
-    queryFn: () =>
-      createPaymentIntent(hotelId as string, numOfNights.toString()),
-  });
+  const { data: paymentIntentData, isLoading: isLoadingPaymentIntent } =
+    useQuery({
+      queryKey: ['createPaymentIntent'],
+      queryFn: () =>
+        createPaymentIntent(hotelId as string, numOfNights.toString()),
+      enabled: !!hotelId && numOfNights > 0,
+    });
 
-  if (isLoadingCurrentUser || isLoadingHotel) return <>Loading...</>;
+  if (isLoadingCurrentUser || isLoadingHotel || isLoadingPaymentIntent)
+    return <>Loading...</>;
 
   return (
     <div className='grid md:grid-cols-[1fr_2fr]'>
@@ -64,7 +67,10 @@ export default function Booking() {
             clientSecret: paymentIntentData.clientSecret,
           }}
         >
-          <BookingForm currentUser={currentUser} />
+          <BookingForm
+            currentUser={currentUser}
+            paymentIntent={paymentIntentData}
+          />
         </Elements>
       )}
     </div>
