@@ -5,6 +5,11 @@ import {
 } from '../../../../../backend/src/shared/types';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { StripeCardElement } from '@stripe/stripe-js';
+import { useSearchContext } from '../../../contexts/SearchContext';
+import { useParams } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { createRoomBookings } from '../../../services/api-client';
+import toast from 'react-hot-toast';
 
 type Props = {
   currentUser: UserType;
@@ -15,17 +20,44 @@ export type BookingFormData = {
   firstName: string;
   lastName: string;
   email: string;
+  adultCount: number;
+  childCount: number;
+  checkIn: string;
+  checkOut: string;
+  hotelId: string;
+  totalCost: number;
+  paymentIntentId: string;
 };
 
 export default function BookingForm({ currentUser, paymentIntent }: Props) {
   const stripe = useStripe();
   const elements = useElements();
+  const { hotelId } = useParams();
+
+  const { mutate: bookRoom, isPending } = useMutation({
+    mutationFn: createRoomBookings,
+    onSuccess: () => {
+      toast.success('Booking Saved Successful');
+    },
+    onError: () => {
+      toast.error('Error when saving booking');
+    },
+  });
+
+  const { adultCount, checkIn, checkOut, childCount } = useSearchContext();
 
   const { handleSubmit, register } = useForm<BookingFormData>({
     defaultValues: {
       firstName: currentUser.firstName,
       lastName: currentUser.lastName,
       email: currentUser.email,
+      checkIn: checkIn.toISOString(),
+      checkOut: checkOut.toISOString(),
+      adultCount,
+      childCount,
+      hotelId,
+      totalCost: paymentIntent.totalCost,
+      paymentIntentId: paymentIntent.paymentIntentId,
     },
   });
 
@@ -42,6 +74,7 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
 
     if (result.paymentIntent?.status === 'succeeded') {
       // book the room
+      bookRoom({ ...formData, paymentIntentId: result.paymentIntent.id });
     }
   };
 
@@ -106,11 +139,11 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
 
       <div className='flex justify-end'>
         <button
-          // disabled={isLoading}
+          disabled={isPending}
           type='submit'
-          className='bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-md disabled:bg-gray-500'
+          className='bg-blue-600 text-white p-2 rounded font-bold hover:bg-blue-500 text-md disabled:bg-gray-500'
         >
-          {/* {isLoading ? 'Saving...' : 'Confirm Booking'} */}
+          {isPending ? 'Saving...' : 'Confirm Booking'}
         </button>
       </div>
     </form>

@@ -10,7 +10,12 @@ import {
 import { param, validationResult } from 'express-validator';
 import { verifyToken } from '../middlewares/authMiddleware';
 
-const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
+let stripe: Stripe;
+try {
+  stripe = new Stripe(process.env.STRIPE_API_KEY as string);
+} catch (error) {
+  console.log('🔥 ERROR: ', error);
+}
 
 const router = express.Router();
 
