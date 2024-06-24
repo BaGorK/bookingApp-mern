@@ -204,7 +204,7 @@ export const createPaymentIntent = async (
   numOfNights: string
 ) => {
   const res = await fetch(
-    `${API_BASE_URL}/api/v1/hotels/${hotelId}/payment-intent`,
+    `${API_BASE_URL}/api/v1/hotels/${hotelId}/bookings/payment-intent`,
     {
       credentials: 'include',
       method: 'post',
@@ -220,5 +220,5 @@ export const createPaymentIntent = async (
   }
 
   const data = await res.json();
-  return data as PaymentIntentResponse
+  return data as PaymentIntentResponse;
 };
