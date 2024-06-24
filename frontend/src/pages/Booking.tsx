@@ -1,12 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchCurrentUser, fetchHotelById } from '../services/api-client';
+import {
+  createPaymentIntent,
+  fetchCurrentUser,
+  fetchHotelById,
+} from '../services/api-client';
 import BookingForm from '../components/forms/BookingForm/BookingForm';
 import { useSearchContext } from '../contexts/SearchContext';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import BookingDetailsSummary from '../components/BookingDetailsSummary';
+import { Elements } from '@stripe/react-stripe-js';
+import { useAppContext } from '../contexts/AppContext';
 
 export default function Booking() {
+  const { stripePromise } = useAppContext();
   const search = useSearchContext();
   const { hotelId } = useParams();
 
@@ -32,6 +39,12 @@ export default function Booking() {
     queryFn: fetchCurrentUser,
   });
 
+  const { data: paymentIntentData } = useQuery({
+    queryKey: ['createPaymentIntent'],
+    queryFn: () =>
+      createPaymentIntent(hotelId as string, numOfNights.toString()),
+  });
+
   if (isLoadingCurrentUser || isLoadingHotel) return <>Loading...</>;
 
   return (
@@ -44,7 +57,16 @@ export default function Booking() {
         numberOfNights={numOfNights}
         hotel={hotel}
       />
-      {currentUser && <BookingForm currentUser={currentUser} />}
+      {currentUser && paymentIntentData && (
+        <Elements
+          stripe={stripePromise}
+          options={{
+            clientSecret: paymentIntentData.clientSecret,
+          }}
+        >
+          <BookingForm currentUser={currentUser} />
+        </Elements>
+      )}
     </div>
   );
 }
