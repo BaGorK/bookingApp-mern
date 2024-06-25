@@ -225,20 +225,25 @@ export const createPaymentIntent = async (
 };
 
 export const createRoomBookings = async (formData: BookingFormData) => {
-  const res = await fetch(
-    `${API_BASE_URL}/api/v1/hotels/${formData.hotelId}/bookings`,
-    {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
+  try {
+    const res = await fetch(
+      `${API_BASE_URL}/api/v1/hotels/${formData.hotelId}/bookings`,
+      {
+        credentials: 'include',
+        method: 'post',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    if (!res.ok) {
+      throw new Error('Error creating Room bookings');
     }
-  );
-  if (!res.ok) {
-    throw new Error('Error creating Room bookings');
-  }
 
-  const data = await res.json();
-  return data;
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.log('🔥 ERROR creating bookings', err);
+  }
 };
