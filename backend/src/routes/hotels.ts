@@ -156,6 +156,13 @@ router.post(
     }
 
     const totalCost = hotel.pricePerNight * numOfNights;
+    if (totalCost === 0) {
+      return res
+        .status(400)
+        .json({ message: 'Error: minimum cost should be greater than 0' });
+    }
+
+    console.log(totalCost, hotel.pricePerNight, numOfNights);
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalCost * 100,
@@ -225,8 +232,10 @@ router.post(
       await hotel.save();
       res.status(200).send();
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'something went wrong' });
+      console.log('ERROR HAPPENED WHEN CREATING BOOKINGS: ', error);
+      res
+        .status(500)
+        .json({ message: 'ERROR HAPPENED WHEN CREATING BOOKINGS' });
     }
   }
 );

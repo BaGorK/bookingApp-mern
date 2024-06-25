@@ -81,16 +81,16 @@ Router.post(
   }
 );
 
-// fetch my hotels
-// api/v1/myHotels
-Router.get('/', verifyToken, async (req: Request, res: Response) => {
-  try {
-    const hotels = await Hotel.find({ userId: req.userId });
-    res.status(200).json({ data: hotels });
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching hotels' });
-  }
-});
+  // fetch my hotels
+  // api/v1/myHotels
+  Router.get('/', verifyToken, async (req: Request, res: Response) => {
+    try {
+      const hotels = await Hotel.find({ userId: req.userId });
+      res.status(200).json({ data: hotels });
+    } catch (err) {
+      res.status(500).json({ message: 'Error fetching hotels' });
+    }
+  });
 
 Router.get('/:id', verifyToken, async (req: Request, res: Response) => {
   const { id } = req.params;
