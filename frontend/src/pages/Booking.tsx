@@ -42,9 +42,10 @@ export default function Booking() {
   const { data: paymentIntentData, isLoading: isLoadingPaymentIntent } =
     useQuery({
       queryKey: ['createPaymentIntent'],
-      queryFn: () =>
-        createPaymentIntent(hotelId as string, numOfNights.toString()),
-      enabled: !!hotelId && numOfNights > 0,
+      queryFn: () => {
+        if (numOfNights === 0) return;
+        return createPaymentIntent(hotelId as string, numOfNights.toString());
+      },
     });
 
   if (isLoadingCurrentUser || isLoadingHotel || isLoadingPaymentIntent)
