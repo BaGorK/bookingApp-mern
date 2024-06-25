@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { createRoomBookings } from '../../../services/api-client';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 type Props = {
   currentUser: UserType;
@@ -30,6 +31,8 @@ export type BookingFormData = {
 };
 
 export default function BookingForm({ currentUser, paymentIntent }: Props) {
+  const [loadingStripe, setLoadingStripe] = useState<boolean>(false);
+
   const stripe = useStripe();
   const elements = useElements();
   const { hotelId } = useParams();
@@ -65,12 +68,19 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
     if (!stripe || !elements) {
       return;
     }
+    setLoadingStripe(true);
 
     const result = await stripe.confirmCardPayment(paymentIntent.clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement) as StripeCardElement,
       },
     });
+    setLoadingStripe(false);
+
+    if (result.error?.message) {
+      return toast.error(result.error.message);
+    }
+    // console.log(result);
 
     if (result.paymentIntent?.status === 'succeeded') {
       // book the room
@@ -139,11 +149,11 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
 
       <div className='flex justify-end'>
         <button
-          disabled={isPending}
+          disabled={isPending || loadingStripe}
           type='submit'
           className='bg-blue-600 text-white p-2 rounded font-bold hover:bg-blue-500 text-md disabled:bg-gray-500'
         >
-          {isPending ? 'Saving...' : 'Confirm Booking'}
+          {isPending || loadingStripe ? 'Saving...' : 'Confirm Booking'}
         </button>
       </div>
     </form>
