@@ -3,7 +3,7 @@ dotenv.config();
 
 import path from 'path';
 import { v2 as cloudinary } from 'cloudinary';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
@@ -56,6 +56,22 @@ app.use('*', (req: Request, res: Response) => {
   return res.status(404).json({ message: 'Route not found' });
 });
 
+// Global error handler middleware
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error('🔥 ERROR: ', err.stack);
+
+  // Determine the appropriate HTTP status code based on the error
+  const statusCode = err.statusCode || 500;
+
+  // Prepare the error response
+  res.status(statusCode).json({
+    error: {
+      message: err.message || 'An unexpected error occurred.',
+      status: statusCode,
+    },
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 
 async function connectDb() {
@@ -65,7 +81,7 @@ async function connectDb() {
       console.log(`DB connected and Server listening on port : ${PORT}...`)
     );
   } catch (error) {
-    console.log(error);
+    console.log('🔥 ERROR: ', error);
     process.exit(1);
   }
 }
