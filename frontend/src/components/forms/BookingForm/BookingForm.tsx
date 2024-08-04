@@ -6,8 +6,8 @@ import {
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { StripeCardElement } from '@stripe/stripe-js';
 import { useSearchContext } from '../../../contexts/SearchContext';
-import { useParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createRoomBookings } from '../../../services/api-client';
 import toast from 'react-hot-toast';
 
@@ -34,18 +34,24 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
   const elements = useElements();
   const { hotelId } = useParams();
 
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const { adultCount, checkIn, checkOut, childCount } = useSearchContext();
 
   const { mutate: bookRoom, isPending } = useMutation({
     mutationFn: createRoomBookings,
     onSuccess: () => {
       toast.success('Booking Saved Successful');
+      queryClient.invalidateQueries({
+        queryKey: ['fetchMyBookings'],
+      });
+      navigate('/my-bookings');
     },
     onError: () => {
       toast.error('Error when saving booking');
     },
   });
-
 
   const { handleSubmit, register } = useForm<BookingFormData>({
     defaultValues: {
