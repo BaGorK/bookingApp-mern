@@ -121,6 +121,16 @@ router.get('/search', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/', async (req: Request, res: Response) => {
+  try {
+    const hotels = await Hotel.find().sort('-lastUpdated');
+    res.json(hotels);
+  } catch (err) {
+    console.log('error', err);
+    res.status(500).json({ message: 'Error fetching hotels' });
+  }
+});
+
 // /api/v1/hotels/345677654
 router.get(
   '/:id',
@@ -143,6 +153,7 @@ router.get(
   }
 );
 
+// '/:hotelId/bookings/payment-intent',
 router.post(
   '/:hotelId/bookings/payment-intent',
   verifyToken,
@@ -182,6 +193,7 @@ router.post(
   }
 );
 
+// '/:hotelId/bookings',
 router.post(
   '/:hotelId/bookings',
   verifyToken,
