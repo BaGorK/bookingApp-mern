@@ -23,7 +23,8 @@ export default function Booking() {
     if (search.checkIn && search.checkOut) {
       const nights =
         Math.abs(search.checkOut.getTime() - search.checkIn.getTime()) /
-        (1000 * 60 * 60 * 24);
+          (1000 * 60 * 60 * 24) +
+        1;
 
       setNumOfNights(Math.ceil(nights));
     }
@@ -42,10 +43,9 @@ export default function Booking() {
   const { data: paymentIntentData, isLoading: isLoadingPaymentIntent } =
     useQuery({
       queryKey: ['createPaymentIntent'],
-      queryFn: () => {
-        if (numOfNights === 0) return;
-        return createPaymentIntent(hotelId as string, numOfNights.toString());
-      },
+      queryFn: () =>
+        createPaymentIntent(hotelId as string, numOfNights.toString()),
+      enabled: !!hotelId && numOfNights > 0,
     });
 
   if (isLoadingCurrentUser || isLoadingHotel || isLoadingPaymentIntent)

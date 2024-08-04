@@ -10,7 +10,6 @@ import { useParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { createRoomBookings } from '../../../services/api-client';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
 
 type Props = {
   currentUser: UserType;
@@ -31,11 +30,11 @@ export type BookingFormData = {
 };
 
 export default function BookingForm({ currentUser, paymentIntent }: Props) {
-  const [loadingStripe, setLoadingStripe] = useState<boolean>(false);
-
   const stripe = useStripe();
   const elements = useElements();
   const { hotelId } = useParams();
+
+  const { adultCount, checkIn, checkOut, childCount } = useSearchContext();
 
   const { mutate: bookRoom, isPending } = useMutation({
     mutationFn: createRoomBookings,
@@ -47,7 +46,6 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
     },
   });
 
-  const { adultCount, checkIn, checkOut, childCount } = useSearchContext();
 
   const { handleSubmit, register } = useForm<BookingFormData>({
     defaultValues: {
@@ -68,14 +66,12 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
     if (!stripe || !elements) {
       return;
     }
-    setLoadingStripe(true);
 
     const result = await stripe.confirmCardPayment(paymentIntent.clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement) as StripeCardElement,
       },
     });
-    setLoadingStripe(false);
 
     if (result.error?.message) {
       return toast.error(result.error.message);
@@ -149,11 +145,11 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
 
       <div className='flex justify-end'>
         <button
-          disabled={isPending || loadingStripe}
+          disabled={isPending}
           type='submit'
           className='bg-blue-600 text-white p-2 rounded font-bold hover:bg-blue-500 text-md disabled:bg-gray-500'
         >
-          {isPending || loadingStripe ? 'Saving...' : 'Confirm Booking'}
+          {isPending ? 'Saving...' : 'Confirm Booking'}
         </button>
       </div>
     </form>

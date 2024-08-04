@@ -150,19 +150,14 @@ router.post(
     const { numOfNights } = req.body;
     const { hotelId } = req.params;
 
+    console.log('numOfNights', numOfNights);
+
     const hotel = await Hotel.findById(hotelId);
     if (!hotel) {
       return res.status(404).json({ message: 'Hotel not found' });
     }
 
     const totalCost = hotel.pricePerNight * numOfNights;
-    if (totalCost === 0) {
-      return res
-        .status(400)
-        .json({ message: 'Error: minimum cost should be greater than 0' });
-    }
-
-    console.log(totalCost, hotel.pricePerNight, numOfNights);
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalCost * 100,
