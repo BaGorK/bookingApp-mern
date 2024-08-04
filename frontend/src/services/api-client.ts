@@ -1,6 +1,7 @@
 // import { HotelType } from '../../../backend/src/shared/types';
 import {
   HotelSearchResponse,
+  HotelType,
   PaymentIntentResponse,
   UserType,
 } from '../../../backend/src/shared/types';
@@ -246,4 +247,17 @@ export const createRoomBookings = async (formData: BookingFormData) => {
   } catch (err) {
     console.log('🔥 ERROR creating bookings', err);
   }
+};
+
+export const fetchMyBookings = async (): Promise<HotelType[]> => {
+  const res = await fetch(`${API_BASE_URL}/api/v1/myBookings`, {
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error('Unable to fetch bookings');
+  }
+
+  const data = await res.json() as HotelType[];
+  return data;
 };
