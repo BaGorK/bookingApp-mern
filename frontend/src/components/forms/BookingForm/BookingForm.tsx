@@ -41,9 +41,9 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
 
   const { mutate: bookRoom, isPending } = useMutation({
     mutationFn: createRoomBookings,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success('Booking Saved Successful');
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['fetchMyBookings'],
       });
       navigate('/my-bookings');

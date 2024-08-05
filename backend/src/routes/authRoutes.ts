@@ -1,9 +1,7 @@
 import express, { Request, Response } from 'express';
-import { check, validationResult } from 'express-validator';
-import User from '../models/userModel';
-import { comparePassword } from '../utils/passwordUtils';
-import { createJWT } from '../utils/tokenUtils';
+import { check } from 'express-validator';
 import { verifyToken } from '../middlewares/authMiddleware';
+import authController from '../controllers/authController';
 
 const Router = express.Router();
 
@@ -15,53 +13,19 @@ Router.post(
       min: 6,
     }),
   ],
-  async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty())
-      return res.status(400).json({ message: errors.array() });
-
-    const { email, password } = req.body;
-
-    try {
-      const user = await User.findOne({ email });
-
-      if (!user) {
-        return res.status(400).json({ message: 'Invalid Credentials' });
-      }
-
-      const isMatch = await comparePassword(password, user.password);
-
-      if (!isMatch) {
-        return res.status(400).json({ message: 'Invalid Credentials' });
-      }
-
-      const token = createJWT({ userId: user._id });
-
-      res.cookie('auth_token', token, {
-        maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-      });
-
-      return res.status(200).json({ userId: user._id });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Something went wrong' });
-    }
-  }
+  authController.login
 );
 
 Router.get('/validate-token', verifyToken, (req: Request, res: Response) => {
   return res.status(200).json({ userId: req.userId });
 });
 
-Router.post('/logout', (req:Request, res:Response) => {
+Router.post('/logout', (req: Request, res: Response) => {
   res.cookie('auth_token', '', {
-    expires: new Date(Date.now())
-  })
+    expires: new Date(Date.now()),
+  });
 
-  return res.status(200).json({message: 'logout success'})
-})
+  return res.status(200).json({ message: 'logout success' });
+});
 
 export default Router;
