@@ -1,9 +1,8 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config';
 
 import path from 'path';
 import { v2 as cloudinary } from 'cloudinary';
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
@@ -14,6 +13,7 @@ import authRouter from './routes/authRoutes';
 import myHotelRouter from './routes/myHotelRoutes';
 import hotelRouter from './routes/hotels';
 import bookingRouter from './routes/myBookings';
+import { globalErrorHandler } from './middlewares/globalErrorHandler';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -50,29 +50,18 @@ app.use('/api/v1/myHotels', myHotelRouter);
 app.use('/api/v1/hotels', hotelRouter);
 app.use('/api/v1/myBookings', bookingRouter);
 
+// send html file
 app.get('*', (req: Request, res: Response) => {
   return res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 
+// handle 404 routes
 app.use('*', (req: Request, res: Response) => {
   return res.status(404).json({ message: 'Route not found' });
 });
 
 // Global error handler middleware
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error('🔥 ERROR: ', err.stack);
-
-  // Determine the appropriate HTTP status code based on the error
-  const statusCode = err.statusCode || 500;
-
-  // Prepare the error response
-  res.status(statusCode).json({
-    error: {
-      message: err.message || 'An unexpected error occurred.',
-      status: statusCode,
-    },
-  });
-});
+app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 3000;
 

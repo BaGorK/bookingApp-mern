@@ -1,4 +1,4 @@
-import  { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import cloudinary from 'cloudinary';
 
 import Hotel from '../models/hotelModel';
@@ -9,6 +9,8 @@ async function uploadImages(imageFiles: Express.Multer.File[]) {
     const b64 = Buffer.from(image.buffer).toString('base64');
     let dataURI = `data:${image.mimetype};base64,${b64}`;
     const res = await cloudinary.v2.uploader.upload(dataURI);
+
+    console.log(res);
 
     return res.url;
   });

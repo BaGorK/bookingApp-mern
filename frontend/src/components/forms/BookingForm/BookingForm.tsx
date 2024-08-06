@@ -41,11 +41,11 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
 
   const { mutate: bookRoom, isPending } = useMutation({
     mutationFn: createRoomBookings,
-    onSuccess: async () => {
-      toast.success('Booking Saved Successful');
-      await queryClient.invalidateQueries({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
         queryKey: ['fetchMyBookings'],
       });
+      toast.success('Booking Saved Successful');
       navigate('/my-bookings');
     },
     onError: () => {
@@ -153,7 +153,7 @@ export default function BookingForm({ currentUser, paymentIntent }: Props) {
         <button
           disabled={isPending}
           type='submit'
-          className='bg-blue-600 text-white p-2 rounded font-bold hover:bg-blue-500 text-md disabled:bg-gray-500'
+          className='bg-blue-600 w-40 text-white p-2 rounded font-bold hover:bg-blue-500 text-md disabled:bg-gray-500'
         >
           {isPending ? 'Saving...' : 'Confirm Booking'}
         </button>
