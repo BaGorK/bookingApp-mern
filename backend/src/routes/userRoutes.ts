@@ -1,11 +1,11 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { verifyToken } from '../middlewares/authMiddleware';
+import { protect } from '../middlewares/authMiddleware';
 import userController from '../controllers/userController';
 
 const Router = express.Router();
 
-Router.get('/me', verifyToken, userController.getMe);
+Router.get('/me', protect, userController.getMe);
 
 // /api/users/register
 Router.post(

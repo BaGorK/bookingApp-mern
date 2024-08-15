@@ -1,8 +1,8 @@
 import express from 'express';
 import multer from 'multer';
 import { body } from 'express-validator';
-import { verifyToken } from '../middlewares/authMiddleware';
 import myHotelsController from '../controllers/myHotelsController';
+import { protect } from '../middlewares/authMiddleware';
 
 const Router = express.Router();
 
@@ -18,7 +18,7 @@ const upload = multer({
 // api/v1/myHotels
 Router.post(
   '/',
-  verifyToken,
+  protect,
   [
     body('name').notEmpty().withMessage('Name is required'),
     body('city').notEmpty().withMessage('City is required'),
@@ -42,11 +42,11 @@ Router.post(
 
 // fetch my hotels
 // api/v1/myHotels
-Router.get('/', verifyToken, myHotelsController.getMyHotels);
-Router.get('/:id', verifyToken, myHotelsController.getHotel);
+Router.get('/', protect, myHotelsController.getMyHotels);
+Router.get('/:id', protect, myHotelsController.getHotel);
 Router.put(
   '/:hotelId',
-  verifyToken,
+  protect,
   upload.array('imageFiles'),
   myHotelsController.updateHotel
 );

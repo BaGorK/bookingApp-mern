@@ -1,10 +1,10 @@
 import express from 'express';
-import { verifyToken } from '../middlewares/authMiddleware';
 import myBookingsController from '../controllers/myBookingsController';
+import { protect } from '../middlewares/authMiddleware';
 
 const router = express.Router();
 
-router.get('/', verifyToken, myBookingsController.getMyBookings);
+router.get('/', protect, myBookingsController.getMyBookings);
 
 // const bookingRouter = router;
 export default router;
