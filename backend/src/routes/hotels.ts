@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { param } from 'express-validator';
-import { verifyToken } from '../middlewares/authMiddleware';
+import { protect } from '../middlewares/authMiddleware';
 import hotelsController from '../controllers/hotelsController';
 
 const router = express.Router();
@@ -20,15 +20,11 @@ router.get(
 // '/:hotelId/bookings/payment-intent',
 router.post(
   '/:hotelId/bookings/payment-intent',
-  verifyToken,
+  protect,
   hotelsController.createPaymentIntent
 );
 
 // '/:hotelId/bookings',
-router.post(
-  '/:hotelId/bookings',
-  verifyToken,
-  hotelsController.getBookingsOnHotel
-);
+router.post('/:hotelId/bookings', protect, hotelsController.getBookingsOnHotel);
 
 export default router;

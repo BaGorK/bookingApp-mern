@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { check } from 'express-validator';
-import { verifyToken } from '../middlewares/authMiddleware';
-import authController from '../controllers/authController';
+import userController from '../controllers/userController';
+import { protect } from '../middlewares/authMiddleware';
 
 const Router = express.Router();
 
@@ -13,10 +13,10 @@ Router.post(
       min: 6,
     }),
   ],
-  authController.login
+  userController.login
 );
 
-Router.get('/validate-token', verifyToken, (req: Request, res: Response) => {
+Router.get('/validate-token', protect, (req: Request, res: Response) => {
   return res.status(200).json({ userId: req.userId });
 });
 

@@ -1,21 +1,9 @@
-import  { Request, Response } from 'express';
-import cloudinary from 'cloudinary';
+import { Request, Response } from 'express';
 
 import Hotel from '../models/hotelModel';
 import { HotelType } from '../shared/types';
+import { uploadImages } from '../utils/uploadImages';
 
-async function uploadImages(imageFiles: Express.Multer.File[]) {
-  const uploadPromises = imageFiles.map(async (image) => {
-    const b64 = Buffer.from(image.buffer).toString('base64');
-    let dataURI = `data:${image.mimetype};base64,${b64}`;
-    const res = await cloudinary.v2.uploader.upload(dataURI);
-
-    return res.url;
-  });
-
-  const imageUrls = await Promise.all(uploadPromises);
-  return imageUrls;
-}
 
 const createHotel = async (req: Request, res: Response) => {
   try {
