@@ -4,7 +4,6 @@ import { createJWT } from '../utils/tokenUtils';
 import { validationResult } from 'express-validator';
 import { comparePassword } from '../utils/passwordUtils';
 
-
 const getMe = async (req: Request, res: Response) => {
   const userId = req.userId;
 
@@ -55,7 +54,6 @@ const signup = async (req: Request, res: Response) => {
   }
 };
 
-
 const login = async (req: Request, res: Response) => {
   const errors = validationResult(req);
 
@@ -67,13 +65,7 @@ const login = async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid Credentials' });
-    }
-
-    const isMatch = await comparePassword(password, user.password);
-
-    if (!isMatch) {
+    if (!user || !(await comparePassword(password, user.password))) {
       return res.status(400).json({ message: 'Invalid Credentials' });
     }
 

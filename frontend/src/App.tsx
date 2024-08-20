@@ -1,16 +1,18 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './layouts/Layout';
-import Register from './pages/Register';
-import SignIn from './pages/SignIn';
 import { useAppContext } from './contexts/AppContext';
-import AddHotel from './pages/AddHotel';
-import MyHotels from './pages/MyHotels';
-import EditHotel from './pages/EditHotel';
-import Search from './pages/Search';
-import Detail from './pages/Detail';
-import Booking from './pages/Booking';
-import MyBookings from './pages/MyBookings';
-import Home from './pages/Home';
+import {
+  AddHotel,
+  Booking,
+  Detail,
+  EditHotel,
+  Home,
+  MyBookings,
+  MyHotels,
+  Register,
+  Search,
+  SignIn,
+} from './pages';
 
 export default function App() {
   const { isLoggedIn } = useAppContext();
