@@ -48,7 +48,9 @@ function AppContextProvider(props: { children: ReactNode }) {
       <AppContext.Provider
         value={{ showToast, isLoggedIn: !isError, stripePromise }}
       >
-        <Spinner />
+        <div className='min-h-[80vh] flex items-center justify-center'>
+          <Spinner />
+        </div>
       </AppContext.Provider>
     );
 
@@ -62,8 +64,11 @@ function AppContextProvider(props: { children: ReactNode }) {
 }
 
 export const useAppContext = () => {
-  const context = useContext(AppContext);
-  return context as AppContextType;
+  const ctx = useContext(AppContext);
+  if (!ctx)
+    throw new Error('useAppContext must be used within AppContextProvider');
+
+  return ctx;
 };
 
 export default AppContextProvider;

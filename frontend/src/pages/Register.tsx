@@ -56,7 +56,7 @@ export default function Register() {
           <input
             type="text"
             id="firstName"
-            defaultValue="edmealem"
+            defaultValue="Edmealem"
             className="border rounded w-full py-1 px-2 font-normal"
             {...register("firstName", { required: "this field is required" })}
           />
