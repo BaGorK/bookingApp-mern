@@ -8,6 +8,7 @@ import StarRatingFilter from '../components/StarRatingFilter';
 import HotelTypesFilter from '../components/HotelTypesFilter';
 import FacilitiesFilter from '../components/FacilitiesFilter';
 import PriceFilter from '../components/PriceFilter';
+import Spinner from '../components/Spinner';
 
 export default function Search() {
   const search = useSearchContext();
@@ -72,7 +73,6 @@ export default function Search() {
         : preFacilities.filter((f) => f !== facility)
     );
   };
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className='grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5'>
@@ -99,40 +99,47 @@ export default function Search() {
           />
         </div>
       </div>
-
-      <div className='flex flex-col gap-5'>
-        <div className='flex justify-between items-center'>
-          <span className='text-xl font-bold'>
-            {hotelsDate?.pagination.total} Hotels found
-            {search.destination ? ` in ${search.destination}` : ''}
-          </span>
-
-          <select
-            value={sortOption}
-            onChange={(event) => setSortOption(event.target.value)}
-            className='p-2 border rounded-md'
-          >
-            <option value=''>Sort By</option>
-            <option value='starRating'>Star Rating</option>
-            <option value='pricePerNightAsc'>
-              Price Per Night (low to high)
-            </option>
-            <option value='pricePerNightDesc'>
-              Price Per Night (high to low)
-            </option>
-          </select>
+      {isLoading ? (
+        <div className='flex flex-col gap-5'>
+          <div className='flex justify-between items-center'>
+            <Spinner />
+          </div>
         </div>
-        {hotelsDate?.data.map((hotel) => (
-          <SearchResultCard key={hotel._id} hotel={hotel} />
-        ))}
-        <div>
-          <Pagination
-            page={hotelsDate?.pagination.page || 1}
-            onPageChange={onPageChange}
-            pages={hotelsDate?.pagination.pages || 1}
-          />
+      ) : (
+        <div className='flex flex-col gap-5'>
+          <div className='flex justify-between items-center'>
+            <span className='text-xl font-bold'>
+              {hotelsDate?.pagination.total} Hotels found
+              {search.destination ? ` in ${search.destination}` : ''}
+            </span>
+
+            <select
+              value={sortOption}
+              onChange={(event) => setSortOption(event.target.value)}
+              className='p-2 border rounded-md'
+            >
+              <option value=''>Sort By</option>
+              <option value='starRating'>Star Rating</option>
+              <option value='pricePerNightAsc'>
+                Price Per Night (low to high)
+              </option>
+              <option value='pricePerNightDesc'>
+                Price Per Night (high to low)
+              </option>
+            </select>
+          </div>
+          {hotelsDate?.data.map((hotel) => (
+            <SearchResultCard key={hotel._id} hotel={hotel} />
+          ))}
+          <div>
+            <Pagination
+              page={hotelsDate?.pagination.page || 1}
+              onPageChange={onPageChange}
+              pages={hotelsDate?.pagination.pages || 1}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

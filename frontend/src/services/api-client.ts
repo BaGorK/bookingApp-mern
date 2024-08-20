@@ -5,7 +5,7 @@ import {
   PaymentIntentResponse,
   UserType,
 } from '../../../backend/src/shared/types';
-import { BookingFormData } from '../components/forms/BookingForm/BookingForm';
+import { BookingFormData } from '../forms/BookingForm/BookingForm';
 import { RegisterFormDataType } from '../pages/Register';
 import { SignInFormDataType } from '../pages/SignIn';
 
@@ -258,16 +258,15 @@ export const fetchMyBookings = async (): Promise<HotelType[]> => {
     throw new Error('Unable to fetch bookings');
   }
 
-  const data = await res.json() as HotelType[];
+  const data = (await res.json()) as HotelType[];
   return data;
 };
-
 
 export const fetchHotels = async (): Promise<HotelType[]> => {
   const res = await fetch(`${API_BASE_URL}/api/v1/hotels`);
 
-  if(!res.ok) throw new Error('Error fetching hotels');
+  if (!res.ok) throw new Error('Error fetching hotels');
 
-  const data = await res.json()
+  const data = await res.json();
   return data;
-}
+};

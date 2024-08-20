@@ -2,13 +2,13 @@ import { useForm } from 'react-hook-form';
 import {
   PaymentIntentResponse,
   UserType,
-} from '../../../../../backend/src/shared/types';
+} from '../../../../backend/src/shared/types';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { StripeCardElement } from '@stripe/stripe-js';
-import { useSearchContext } from '../../../contexts/SearchContext';
+import { useSearchContext } from '../../contexts/SearchContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createRoomBookings } from '../../../services/api-client';
+import { createRoomBookings } from '../../services/api-client';
 import toast from 'react-hot-toast';
 
 type Props = {

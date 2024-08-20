@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 
 import * as apiClient from './../services/api-client';
 import { AiFillStar } from 'react-icons/ai';
-import GuestInfoForm from '../components/forms/GuestInfoForm/GuestInfoForm';
+import GuestInfoForm from '../forms/GuestInfoForm/GuestInfoForm';
+import Spinner from '../components/Spinner';
 
 export default function Detail() {
   const { hotelId } = useParams();
@@ -13,7 +14,7 @@ export default function Detail() {
     queryFn: () => apiClient.fetchHotelById(hotelId as string),
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Spinner/>
 
   if (!hotel) return <></>;
 

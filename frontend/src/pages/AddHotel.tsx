@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import ManageHotelForm from '../components/forms/manageHotelForm/ManageHotelForm';
+import ManageHotelForm from '../forms/manageHotelForm/ManageHotelForm';
 import * as apiClient from '../services/api-client';
 
 export default function AddHotel() {

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchMyBookings } from '../services/api-client';
+import Spinner from '../components/Spinner';
 
 function MyBookings() {
   const { data: hotels, isLoading } = useQuery({
@@ -7,7 +8,7 @@ function MyBookings() {
     queryFn: fetchMyBookings,
   });
 
-  if (isLoading) return <>loading</>;
+  if (isLoading) return <Spinner />;
 
   if (!hotels || hotels.length === 0) {
     return <span>No bookings found</span>;

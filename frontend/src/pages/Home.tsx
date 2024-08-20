@@ -1,17 +1,18 @@
-import { useQuery } from "@tanstack/react-query"
-import { fetchHotels } from "../services/api-client"
-import LatestDestinationCard from "../components/LatestDestinationCard";
+import { useQuery } from '@tanstack/react-query';
+import { fetchHotels } from '../services/api-client';
+import LatestDestinationCard from '../components/LatestDestinationCard';
+import Spinner from '../components/Spinner';
 
 function Home() {
-  const {data: hotels, isLoading} = useQuery({
-    queryKey: ['fetchQuery'], 
-    queryFn: fetchHotels
-  })
+  const { data: hotels, isLoading } = useQuery({
+    queryKey: ['fetchQuery'],
+    queryFn: fetchHotels,
+  });
 
-  if(isLoading) return
+  if (isLoading) return <Spinner />;
 
-    const topRowHotels = hotels?.slice(0, 2) || [];
-    const bottomRowHotels = hotels?.slice(2) || [];
+  const topRowHotels = hotels?.slice(0, 2) || [];
+  const bottomRowHotels = hotels?.slice(2) || [];
 
   return (
     <div className='space-y-3'>
@@ -33,4 +34,4 @@ function Home() {
   );
 }
 
-export default Home
+export default Home;
