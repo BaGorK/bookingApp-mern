@@ -1,18 +1,10 @@
 import express from 'express';
-import multer from 'multer';
 import { body } from 'express-validator';
 import myHotelsController from '../controllers/myHotelsController';
 import { protect } from '../middlewares/authMiddleware';
+import upload from '../utils/multer';
 
 const Router = express.Router();
-
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-  },
-});
 
 // create  hotels
 // api/v1/myHotels

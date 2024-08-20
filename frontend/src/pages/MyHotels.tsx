@@ -17,7 +17,7 @@ export default function MyHotels() {
   return (
     <div className='space-y-5'>
       <span className='flex justify-between'>
-        <h1 className='text-3xl font-bold'>My Hotels yyy</h1>
+        <h1 className='text-3xl font-bold'>My Hotels</h1>
         <Link
           to='/add-hotel'
           className='flex bg-blue-600 text-white text-xl font-bold py-2 px-3 rounded hover:bg-blue-500'
