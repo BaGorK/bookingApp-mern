@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 
 import * as apiClient from '../services/api-client';
+import Spinner from '../components/Spinner';
 
 const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || '';
 
@@ -42,7 +43,14 @@ function AppContextProvider(props: { children: ReactNode }) {
     retry: false,
   });
 
-  if (isLoading) return;
+  if (isLoading)
+    return (
+      <AppContext.Provider
+        value={{ showToast, isLoggedIn: !isError, stripePromise }}
+      >
+        <Spinner />
+      </AppContext.Provider>
+    );
 
   return (
     <AppContext.Provider
