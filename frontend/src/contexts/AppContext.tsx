@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useQuery } from '@tanstack/react-query';
 import { ReactNode, createContext, useContext } from 'react';
-import toast from 'react-hot-toast';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 
 import * as apiClient from '../services/api-client';
@@ -9,27 +8,9 @@ import Spinner from '../components/Spinner';
 
 const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || '';
 
-type ToastMessage = {
-  message: string;
-  type: 'SUCCESS' | 'ERROR';
-};
-
 type AppContextType = {
-  showToast: (toastMessage: ToastMessage) => void;
   isLoggedIn: boolean;
   stripePromise: Promise<Stripe | null>;
-};
-
-const showToast = (toastMessage: ToastMessage) => {
-  const { message, type } = toastMessage;
-
-  if (type === 'SUCCESS') {
-    toast.success(message);
-  }
-
-  if (type === 'ERROR') {
-    toast.error(message);
-  }
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -45,9 +26,7 @@ function AppContextProvider(props: { children: ReactNode }) {
 
   if (isLoading)
     return (
-      <AppContext.Provider
-        value={{ showToast, isLoggedIn: !isError, stripePromise }}
-      >
+      <AppContext.Provider value={{ isLoggedIn: !isError, stripePromise }}>
         <div className='min-h-[80vh] flex items-center justify-center'>
           <Spinner />
         </div>
@@ -55,9 +34,7 @@ function AppContextProvider(props: { children: ReactNode }) {
     );
 
   return (
-    <AppContext.Provider
-      value={{ showToast, isLoggedIn: !isError, stripePromise }}
-    >
+    <AppContext.Provider value={{ isLoggedIn: !isError, stripePromise }}>
       {props.children}
     </AppContext.Provider>
   );
