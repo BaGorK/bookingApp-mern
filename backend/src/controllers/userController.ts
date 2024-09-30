@@ -4,6 +4,17 @@ import { createJWT } from '../utils/tokenUtils';
 import { validationResult } from 'express-validator';
 import { comparePassword } from '../utils/passwordUtils';
 
+const setCookie = (res: Response, token: string) => {
+  res.cookie('auth_token', token, {
+    httpOnly: true,
+    expires: new Date(
+      Date.now() +
+        Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000
+    ),
+    secure: process.env.NODE_ENV === 'production',
+  });
+};
+
 const getMe = async (req: Request, res: Response) => {
   const userId = req.userId;
 
@@ -37,15 +48,7 @@ const signup = async (req: Request, res: Response) => {
     user = await User.create(req.body);
 
     const token = createJWT({ userId: user._id });
-
-    res.cookie('auth_token', token, {
-      httpOnly: true,
-      expires: new Date(
-        Date.now() +
-          Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000
-      ),
-      secure: process.env.NODE_ENV === 'production',
-    });
+    setCookie(res, token);
 
     return res.status(201).json({ user });
   } catch (error) {
@@ -70,15 +73,7 @@ const login = async (req: Request, res: Response) => {
     }
 
     const token = createJWT({ userId: user._id });
-
-    res.cookie('auth_token', token, {
-      httpOnly: true,
-      expires: new Date(
-        Date.now() +
-          Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000
-      ),
-      secure: process.env.NODE_ENV === 'production',
-    });
+    setCookie(res, token);
 
     return res.status(200).json({ userId: user._id });
   } catch (error) {
