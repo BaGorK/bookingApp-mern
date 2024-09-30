@@ -31,7 +31,7 @@ export default function Register() {
       queryClient.invalidateQueries({
         queryKey: ['validateToken'],
       });
-      navigate('login');
+      navigate('/');
     },
     onError: () => {
       toast.error('Registering failed please try again :(');
