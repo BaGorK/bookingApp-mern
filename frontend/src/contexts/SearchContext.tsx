@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { ReactNode, createContext, useContext, useState } from 'react';
 
 type SearchContext = {
@@ -16,7 +17,7 @@ type SearchContext = {
   ) => void;
 };
 
-const SearchContext = createContext<SearchContext | undefined>(undefined);
+const SearchContext = createContext<SearchContext | null>(null);
 
 type Props = {
   children: ReactNode;
@@ -64,7 +65,7 @@ export const SearchContextProvider = ({ children }: Props) => {
     sessionStorage.setItem('adultCount', adultCount.toString());
     sessionStorage.setItem('childCount', childCount.toString());
 
-    if(hotelId) sessionStorage.setItem('hotelId', hotelId);
+    if (hotelId) sessionStorage.setItem('hotelId', hotelId);
   };
 
   return (
@@ -85,7 +86,9 @@ export const SearchContextProvider = ({ children }: Props) => {
 };
 
 export const useSearchContext = () => {
-  const context = useContext(SearchContext) as SearchContext;
+  const context = useContext(SearchContext);
+
+  if (!context) throw new Error('Search context used out side of the scope');
 
   return context;
 };
