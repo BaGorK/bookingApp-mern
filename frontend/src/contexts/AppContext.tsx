@@ -13,7 +13,7 @@ type AppContextType = {
   stripePromise: Promise<Stripe | null>;
 };
 
-const AppContext = createContext<AppContextType | undefined>(undefined);
+const AppContext = createContext<AppContextType | null>(null);
 
 const stripePromise = loadStripe(STRIPE_PUB_KEY);
 
