@@ -1,14 +1,17 @@
-import { useQuery } from '@tanstack/react-query';
-import { useSearchContext } from '../contexts/SearchContext';
-import * as apiClient from '../services/api-client';
 import { useState } from 'react';
-import SearchResultCard from '../components/SearchResultsCard';
-import Pagination from '../components/Pagination';
-import StarRatingFilter from '../components/StarRatingFilter';
-import HotelTypesFilter from '../components/HotelTypesFilter';
-import FacilitiesFilter from '../components/FacilitiesFilter';
-import PriceFilter from '../components/PriceFilter';
-import Spinner from '../components/Spinner';
+import { useQuery } from '@tanstack/react-query';
+
+import * as apiClient from '../services/api-client';
+import { useSearchContext } from '../contexts/SearchContext';
+import {
+  SearchResultCard,
+  Pagination,
+  StarRatingFilter,
+  HotelTypesFilter,
+  FacilitiesFilter,
+  PriceFilter,
+  Spinner,
+} from '../components';
 
 export default function Search() {
   const search = useSearchContext();
